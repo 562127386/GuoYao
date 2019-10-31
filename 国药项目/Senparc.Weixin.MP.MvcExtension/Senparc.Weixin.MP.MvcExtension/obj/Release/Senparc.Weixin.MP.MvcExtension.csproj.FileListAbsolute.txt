@@ -1,0 +1,12 @@
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.MP.MvcExtension.XML
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.MP.MvcExtension.dll
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.MP.MvcExtension.pdb
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.MvcExtension\Senparc.Weixin.MP.MvcExtension\obj\Release\Senparc.Weixin.MP.MvcExtension.csprojResolveAssemblyReference.cache
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.MvcExtension\Senparc.Weixin.MP.MvcExtension\obj\Release\Senparc.Weixin.MP.MvcExtension.dll
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.MvcExtension\Senparc.Weixin.MP.MvcExtension\obj\Release\Senparc.Weixin.MP.MvcExtension.pdb
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.MP.MvcExtension.XML
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.MP.MvcExtension.dll
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.MP.MvcExtension.pdb
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.MvcExtension\Senparc.Weixin.MP.MvcExtension\obj\Release\Senparc.Weixin.MP.MvcExtension.csprojResolveAssemblyReference.cache
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.MvcExtension\Senparc.Weixin.MP.MvcExtension\obj\Release\Senparc.Weixin.MP.MvcExtension.dll
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.MvcExtension\Senparc.Weixin.MP.MvcExtension\obj\Release\Senparc.Weixin.MP.MvcExtension.pdb

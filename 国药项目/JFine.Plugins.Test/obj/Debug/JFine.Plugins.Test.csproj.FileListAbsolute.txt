@@ -1,0 +1,12 @@
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\JFine.Web\Plugins\JFine.Test\JFine.Plugins.Test.dll.config
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\JFine.Web\Plugins\JFine.Test\JFine.Plugins.Test.dll
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\JFine.Web\Plugins\JFine.Test\JFine.Plugins.Test.pdb
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\JFine.Plugins.Test\obj\Debug\JFine.Plugins.Test.csprojResolveAssemblyReference.cache
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\JFine.Plugins.Test\obj\Debug\JFine.Plugins.Test.dll
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\JFine.Plugins.Test\obj\Debug\JFine.Plugins.Test.pdb
+H:\国药项目\国药项目\Project\JFineV3.0-GY\JFine.Web\Plugins\JFine.Test\JFine.Plugins.Test.dll.config
+H:\国药项目\国药项目\Project\JFineV3.0-GY\JFine.Web\Plugins\JFine.Test\JFine.Plugins.Test.dll
+H:\国药项目\国药项目\Project\JFineV3.0-GY\JFine.Web\Plugins\JFine.Test\JFine.Plugins.Test.pdb
+H:\国药项目\国药项目\Project\JFineV3.0-GY\JFine.Plugins.Test\obj\Debug\JFine.Plugins.Test.csprojResolveAssemblyReference.cache
+H:\国药项目\国药项目\Project\JFineV3.0-GY\JFine.Plugins.Test\obj\Debug\JFine.Plugins.Test.dll
+H:\国药项目\国药项目\Project\JFineV3.0-GY\JFine.Plugins.Test\obj\Debug\JFine.Plugins.Test.pdb

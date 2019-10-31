@@ -1,0 +1,6 @@
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.XML
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.dll
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.pdb
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin\Senparc.Weixin\obj\Release\Senparc.Weixin.csprojResolveAssemblyReference.cache
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin\Senparc.Weixin\obj\Release\Senparc.Weixin.dll
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin\Senparc.Weixin\obj\Release\Senparc.Weixin.pdb

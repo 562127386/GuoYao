@@ -1,0 +1,363 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2018-12-06 18:24:38
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+@{
+    ViewBag.Title = "病例信息查询";
+    Layout = "~/Views/Shared/LayoutBui.cshtml";
+}
+<style>
+<<<<<<< .mine
+    .add-mark {
+        position: fixed;
+        right: .23rem;
+        bottom: .23rem;
+        width: .8rem;
+        height: .8rem;
+        line-height: .8rem;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        color: #fff;
+        background-color: #52a4ff;
+    }
+
+        .add-mark .icon-plus {
+            color: #fff;
+            font-size: .44rem;
+        }
+    .bui-dialog img {
+        width: 100%;
+    }
+=======
+    /*.add-mark {
+        position: fixed;
+        right: .23rem;
+        bottom: .23rem;
+        width: .8rem;
+        height: .8rem;
+        line-height: .8rem;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        color: #fff;
+        background-color: #52a4ff;
+    }
+
+        .add-mark .icon-plus {
+            color: #fff;
+            font-size: .44rem;
+        }
+
+    .bui-dialog img {
+        width: 100%;
+    }*/
+>>>>>>> .r36
+</style>
+<script>
+    var queryJson = {};
+    //queryJson.keyword = "";
+    //queryJson = JSON.stringify(queryJson)
+    var page_jf = {
+        //rows: 5,//每页行数
+        //page: 1,//当前页
+        sidx: 'Id',//排序列
+        sord: 'asc',//排序类型
+        records: 0,//总记录数
+        total: 0,//总页数
+        LoadEnd: false,
+        queryJson: {}
+        //conditionJson:"1=1"
+    }
+    bui.ready(function () {
+
+        var uiList = bui.list({
+            id: "#scrollSearch",
+            //localData:jsonData,
+            url: "/GY/GY_BL/GetGridJson",
+            pageSize:5,
+            field: {
+                page: "page",
+                size: "rows",
+                data: "rows"
+            },
+            data: page_jf,
+            template: function (data) {
+                var html = "";
+                $.each(data, function (index, el) {
+                    html += '<div class="section-title">' + el.hname + '</div><li class="bui-btn bui-box"><div class="span1"><h3 class="item-title">' + el.operation + '</h3><p class="item-text">' + el.opertime + '</p><p class="item-text"><span class="bui-label">性别</span><span class="bui-value">' + el.psex + '</span></p><p class="item-text"><span class="bui-label">姓名</span><span class="bui-value">' + el.pname + '</span></p></div><i class="icon-listright"></i></li>';
+
+                });
+
+                return html;
+            }
+        });
+
+
+        var uiDialog = bui.dialog({
+            id: "#uiDialog",
+            fullscreen: true,
+            mask: false,
+            effect: "fadeInRight"
+        });
+
+        // var n = 0;
+        //搜索条的初始化
+        var uiSearchbar = bui.searchbar({
+            id: "#searchbar2",
+            onInput: function (ui, keyword) {
+                //实时搜索
+                //console.log(++n)
+                $("#btnSearch").trigger("click");
+            },
+            onRemove: function (ui, keyword) {
+                //删除关键词需要做什么其它处理
+                // console.log(keyword);
+                $("#btnSearch").trigger("click");
+            },
+            callback: function (ui, keyword) {
+
+
+                queryJson.StartTime = $("#StartTime").val();
+                queryJson.EndTime = $("#EndTime").val();
+                queryJson.keyword = keyword;
+                page_jf.queryJson = JSON.stringify(queryJson);
+                // queryJson = JSON.stringify(queryJson)
+                //点击搜索清空数据
+                uiList.empty();
+                // 重新初始化数据
+                uiList.init({
+                    page: 1,
+                    data: page_jf,
+                    onRefresh: onRefresh,
+                    onLoad: onLoad
+                });
+
+
+                // 下拉刷新
+                function onRefresh() {
+
+                }
+                // 上拉加载
+                function onLoad() {
+
+                }
+
+            }
+
+
+        });
+
+        // 自定义居中弹出框
+        var uiDialog = bui.dialog({
+            id: "#dialogCenter",
+            height: 300,
+            // mask: false,
+            callback: function () {
+                uiDialog.close();
+            }
+        });
+
+        $('#btnOpen').on("click", function () {
+            uiDialog.open();
+        })
+
+        $("#btnSearch").on("click", function (argument) {
+            uiSearchbar.search();
+        })
+
+        $("#dateSelect").on("click", function (argument) {
+            var StartTime = $("#StartTime").val();
+            var EndTime = $("#EndTime").val();
+            queryJson.StartTime = StartTime;
+            queryJson.EndTime = EndTime;
+            page_jf.queryJson = JSON.stringify(queryJson);
+            uiList.init({
+
+                data: page_jf
+
+            });
+        })
+        InitDateSearch();
+    })
+
+    //设置日期搜索
+    function InitDateSearch() {
+        // 带按钮
+        var input = $("#StartTime");
+
+        var uiPickerdate = bui.pickerdate({
+            handle: "#StartTime",
+            formatValue: "yyyy-MM-dd",
+            cols: ({
+                hour: "none",
+                minute: "none",
+                second: "none"
+            }),
+            onChange: function (value) {
+                input.val(value);
+            }
+            // 如果不需要按钮,设置为空
+            // buttons: null
+        });
+        input.val("");
+        var input2 = $("#EndTime");
+        var uiPickerdate = bui.pickerdate({
+            handle: "#EndTime",
+            // input 显示的日期格式
+            formatValue: "yyyy-MM-dd",
+            cols: ({
+                hour: "none",
+                minute: "none",
+                second: "none"
+            }),
+            onChange: function (value) {
+                input2.val(value);
+            }
+            // 如果不需要按钮,设置为空
+            // buttons: null
+        });
+        input2.val("");
+    }
+</script>
+
+<div class="bui-page">
+    <header class="bui-bar">
+        <div class="bui-bar">
+            <div class="bui-bar-left">
+                <a class="bui-btn" id="btnBack" onclick="bui.back();"><i class="icon-back"></i></a>
+            </div>
+            <div class="bui-bar-main">
+                <div id="searchbar" class="bui-input ring mini" style="display:-webkit-inline-box;width:40%">
+
+                    <input type="text" id="StartTime" readonly class="bui-input" style="width:100%;" placeholder="请输入开始时间">
+                </div>
+                <div id="searchbar" class="bui-input ring mini" style="display:-webkit-inline-box;width:40%">
+
+                    <input type="text" id="EndTime" readonly class="bui-input" style="width:100%;" placeholder="请输入结束时间">
+                </div>
+                @*<div id="searchbar" class="bui-input ring mini">
+                        <i class="icon-search"></i>
+                        <input type="search" value="" placeholder="请输入关键字" />
+                    </div>*@
+            </div>
+            <div class="bui-bar-right">
+                <div id="btnSearch" class="bui-btn">
+                    搜索
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="bui-bar">
+            <div id="searchbar2" class="bui-input ring mini span1">
+                <i class="icon-search"></i>
+                <input type="search" value="" placeholder="请输入关键字" />
+            </div>
+<<<<<<< .mine
+            <div class="bui-scroll-foot"></div>
+        </div>
+        <div class="add-mark" id="btnOpen">
+            <i class="icon-plus"></i>
+        </div>
+    </main>
+=======
+            </div>
+            @*<ul class="bui-list bui-select-form">
+                <li class="bui-btn bui-box" id="select">
+                    <label>请选择日期</label>
+                    <div class="span1"><input type="text" id="StartTime" readonly class="bui-input"></div>
+                    <i class="icon-listright"></i>
+                </li>
+            </ul>*@
+
+            @*<div id="searchbar" class="bui-searchbar bui-box">
+                <div class="btn-search">时间：</div>
+                <div class="span1">
+                    <div class="">
+                        <input id="StartTime" name="StartTime" class="form-control Wdate " type="date">
+                    </div>
+                </div>-
+                <div class="span1">
+                    <div class="">
+                        <input id="EndTime" name="EndTime" class="form-control Wdate " type="date">
+                    </div>
+                </div>
+
+            </div>*@
+            <!-- 列表控件结构 -->
+            <div id="scrollSearch" class="bui-scroll">
+                <div class="bui-scroll-head"></div>
+                <div class="bui-scroll-main">
+                    <ul class="bui-list"></ul>
+                </div>
+                <div class="bui-scroll-foot"></div>
+            </div>
+            <div class="add-mark" id="btnOpen">
+                <i class="icon-search"></i>
+            </div>
+</main>
+>>>>>>> .r36
+</div>
+
+<<<<<<< .mine
+<!-- 中间自定义弹出框结构	 -->
+<div id="dialogCenter" class="bui-dialog" style="display: none;">
+    <div class="bui-dialog-head">时间搜索</div>
+    <div class="bui-dialog-main">
+        <ul class="bui-list  nav-list  bui-select-form">
+            <li class="bui-btn bui-box clearactive" id="select">
+                <label>开始时间</label>
+                <div class="span1"><input type="text" id="starttime" name="starttime" readonly class="bui-input"></div>
+                <i class="icon-listright"></i>
+            </li>
+            <li class="bui-btn bui-box clearactive" id="select">
+                <label>结束时间</label>
+                <div class="span1"><input type="text" id="endtime" name="endtime" readonly class="bui-input"></div>
+                <i class="icon-listright"></i>
+            </li>
+        </ul>
+</div>
+    <div class="bui-dialog-foot">
+        <div class="bui-box">
+            <div class="span1"><div class="bui-btn">取消</div></div>
+            <div class="span1"><div class="bui-btn blue">确定</div></div>
+        </div>
+    </div>
+    <div class="bui-dialog-close"><i class="icon-close"></i></div>
+</div>=======
+<!-- 中间自定义弹出框结构	 -->
+<div id="dialogCenter" class="bui-dialog" style="display: none;">
+    <div class="bui-dialog-head">时间搜索</div>
+    <div class="bui-dialog-main">
+        <ul class="bui-list  nav-list  bui-select-form">
+            <li class="bui-btn bui-box clearactive" id="select">
+                <label class="bui-label" for="user">开始时间</label>
+                <div class="span1">
+                    <div class="bui-input">
+                        <input id="starttime" name="starttime" type="date" class="required" placeholder="请输入患者名称">
+                    </div>
+                </div>
+            </li>
+            <li class="bui-btn bui-box clearactive" id="select">
+                <label class="bui-label" for="user">结束时间</label>
+                <div class="span1">
+                    <div class="bui-input">
+                        <input id="endtime" name="endtime" type="date" class="required" placeholder="请输入患者名称">
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="bui-dialog-foot">
+        <div class="bui-box">
+            <div class="span1"><div class="bui-btn">取消</div></div>
+            <div class="span1"><div class="bui-btn blue" id="dateSelect">确定</div></div>
+        </div>
+    </div>
+    <div class="bui-dialog-close"><i class="icon-close"></i></div>
+</div>>>>>>>> .r36

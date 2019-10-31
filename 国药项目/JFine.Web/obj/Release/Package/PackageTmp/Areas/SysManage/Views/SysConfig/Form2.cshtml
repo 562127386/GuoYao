@@ -1,0 +1,336 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2017-12-21 23:19:29
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form2.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SysManage/SysConfig/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                }
+            });
+        }
+        $('.jfine_switch input').bootstrapSwitch();
+    });
+
+    //初始化组件
+    function initControl() {
+        $(".collapse-link").click(function () {
+            var o = $(this).closest("div.ibox"),
+                e = $(this).find("i"),
+                i = o.find("div.ibox-content");
+            i.slideToggle();
+            e.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+            o.toggleClass("").toggleClass("border-bottom");
+        });
+
+        //主题
+        var skinData = [{"id":"skin-blue","text":"深蓝"},{"id":"skin-black","text":"白+黑"},{"id":"skin-purple","text":"深紫"},
+                        {"id":"skin-green","text":"深绿"},{"id":"skin-red","text":"深红"},{"id":"skin-yellow","text":"深黄"},
+                        {"id":"skin-blue-light","text":"亮蓝"},{"id":"skin-black-light","text":"小白白"},{"id":"skin-purple-light","text":"亮紫"},
+                        {"id":"skin-green-light","text":"亮绿"},{"id":"skin-red-light","text":"亮红"},{"id":"skin-yellow-light","text":"亮黄"}]
+        $("#DefaultSkin").bindSelect({
+            data: skinData,
+            change: function (data) {
+                if (data != undefined)
+                {
+                    top.changeSkinTemp(data.id);
+                }
+               
+            }
+        });
+    }
+
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = $("#form1").formSerialize();
+        $.submitForm({
+            url: "/SysManage/SysConfig/SaveForm?keyValue=" + keyValue,
+            param: postData,
+            success: function () {
+                //$.currentWindow().$("#gridList").trigger("reloadGrid");
+                var parentTabId = top.$.jfinetab.getCurrentTabParentId();
+                var resultPage = top.$.jfinetab.getTabContentFromId(parentTabId);
+                resultPage.refreshGrid();
+                top.$.jfinetab.closeCurrentTab();
+            }
+        })
+    }
+    //关闭Form
+    function closeForm() {
+        top.$.jfinetab.closeCurrentTab();
+    }
+</script>
+
+<form id="form1">
+    <input type="hidden" id="Id" name="Id" value="" />
+    <div id="jfine-form-container" class="jfine-form-container" border="0">
+        <table id="jfine-form-maintable" class="jfineui jfine-form-maintable" style="table-layout: fixed;"
+               border="0" cellspacing="0" cellpadding="0" align="center">
+            <tbody>
+                <tr id="jfine-form-titlebg" class="jfine-form-titlebg">
+                    <td>
+                        <table align="center" border="0" style="margin: 0px auto; width: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="jfine-form-header_l">
+                                        <span class="jfine-form-logo">
+                                            <img src="/Content/images/formlogo.png" />
+                                        </span>
+                                    </td>
+                                    <td class="jfine-form-header_c">
+                                        <span class="jfine-form-header-title">系统配置</span>
+                                    </td>
+                                    <td class="jfine-form-header_r">
+                                        <div>
+                                            <div class="btn-group">
+                                                <a class="btn btn-info dropdown-text" onclick="submitForm()"><i class="fa fa-send"></i>提交</a>
+                                                <a class="btn btn-warning dropdown-text" onclick="closeForm()"><i class="fa fa-minus"></i>关闭</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="jfine-form-formcontent" class="jfine-form-titlebg" style="">
+                    <td>
+                        <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+                            <input id="Id" name="Id" type="hidden" />
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h4>系统设置</h4>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content" style="overflow:hidden;">
+                                    <table class="form">
+
+                                        <tr>
+                                            <th class="formTitle"> 系统代码</th>
+                                            <td class="formValue">
+                                                <input id="SysCode" name="SysCode" type="text" class="form-control required" placeholder="请输入系统代码" />
+                                            </td>
+                                            <th class="formTitle"> 软件名称</th>
+                                            <td class="formValue">
+                                                <input id="SoftName" name="SoftName" type="text" class="form-control required" placeholder="请输入软件名称" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 软件简称</th>
+                                            <td class="formValue">
+                                                <input id="SoftShortName" name="SoftShortName" type="text" class="form-control required" placeholder="请输入软件简称" />
+                                            </td>
+                                            <th class="formTitle"> 软件版本</th>
+                                            <td class="formValue">
+                                                <input id="SoftVersion" name="SoftVersion" type="text" class="form-control required" placeholder="请输入软件版本" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 软件Logo</th>
+                                            <td class="formValue">
+                                                <input id="SoftLogo" name="SoftLogo" type="text" class="form-control required" placeholder="请输入软件Logo" />
+                                            </td>
+                                            <th class="formTitle"> 联系我们</th>
+                                            <td class="formValue">
+                                                <input id="ContactUs" name="ContactUs" type="text" class="form-control required" placeholder="请输入联系我们" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 公司名称</th>
+                                            <td class="formValue">
+                                                <input id="CompanyName" name="CompanyName" type="text" class="form-control required" placeholder="请输入公司名称" />
+                                            </td>
+                                            <th class="formTitle"> 公司简称</th>
+                                            <td class="formValue">
+                                                <input id="CompanyShortName" name="CompanyShortName" type="text" class="form-control required" placeholder="请输入公司简称" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 公司联系方式</th>
+                                            <td class="formValue">
+                                                <input id="CompanyContract" name="CompanyContract" type="text" class="form-control required" placeholder="请输入公司联系方式" />
+                                            </td>
+                                            <th class="formTitle"> 公司地址</th>
+                                            <td class="formValue">
+                                                <input id="CompanyAddress" name="CompanyAddress" type="text" class="form-control required" placeholder="请输入公司地址" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 公司Logo</th>
+                                            <td class="formValue">
+                                                <input id="CompanyLogo" name="CompanyLogo" type="text" class="form-control required" placeholder="请输入公司Logo" />
+                                            </td>
+                                            <th class="formTitle"> 版权</th>
+                                            <td class="formValue">
+                                                <input id="CopyRight" name="CopyRight" type="text" class="form-control required" placeholder="请输入版权" />
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h4>登陆设置</h4>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <table class="form">
+
+                                        <tr>
+                                            <th class="formTitle"> 默认主题</th>
+                                            <td class="formValue">
+                                                <div class="jfine_switch" data-on="primary">
+                                                    <select id="DefaultSkin" name="DefaultSkin" class="form-control required" ></select>
+                                                </div>
+                                            </td>
+                                            <th class="formTitle"></th>
+                                            <td class="formValue"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 是否过滤IP</th>
+                                            <td class="formValue">
+                                                <div class="jfine_switch" data-on="primary">
+                                                    <input id="IsIPFilter" name="IsIPFilter" type="checkbox" />
+                                                </div>
+                                            </td>
+                                            <th class="formTitle"> IP段</th>
+                                            <td class="formValue"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 是否过滤时间段</th>
+                                            <td class="formValue">
+                                                <div class="jfine_switch" data-on="primary">
+                                                    <input id="IsTimeFilter" name="IsTimeFilter" type="checkbox" />
+                                                </div>
+                                            </td>
+                                            <th class="formTitle"> 时间段</th>
+                                            <td class="formValue">
+                                                <input id="StartTime" name="StartTime" /> -<input id="EndTime" name="EndTime" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 是否通过CA</th>
+                                            <td class="formValue">
+                                                <div class="jfine_switch" data-on="primary">
+                                                    <input id="IsCA" name="IsCA" type="checkbox" />
+                                                </div>
+                                            </td>
+                                            <th class="formTitle"> CA服务地址</th>
+                                            <td class="formValue">
+                                                <input id="CAHost" name="CAHost" type="text" class="form-control required" placeholder="请输入CA服务地址" />
+                                            </td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <th class="formTitle"> 系统初始化密码</th>
+                                            <td class="formValue" colspan="3">
+                                                <input id="InitPassword" name="InitPassword" type="text" class="form-control required" placeholder="请输入系统初始化密码" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 是否系统维护</th>
+                                            <td class="formValue">
+                                                <div class="jfine_switch" data-on="primary">
+                                                    <input id="IsMaintenance" name="IsMaintenance" type="checkbox" />
+                                                </div>
+                                            </td>
+                                            <th class="formTitle"> 系统维护信息</th>
+                                            <td class="formValue">
+                                                <input id="MaintenanceMessage" name="MaintenanceMessage" type="text" class="form-control required" placeholder="请输入系统维护信息" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h4>邮件设置</h4>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <table class="form">
+
+                                        <tr>
+                                            <th class="formTitle"> 邮箱名称</th>
+                                            <td class="formValue">
+                                                <input id="MailName" name="MailName" type="text" class="form-control required" placeholder="请输入邮箱名称" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 邮箱地址</th>
+                                            <td class="formValue">
+                                                <input id="MailUserName" name="MailUserName" type="text" class="form-control required" placeholder="请输入邮箱地址" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 邮箱密码</th>
+                                            <td class="formValue">
+                                                <input id="MailPassword" name="MailPassword" type="text" class="form-control required" placeholder="请输入邮箱密码" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 邮箱主机</th>
+                                            <td class="formValue">
+                                                <input id="MailHost" name="MailHost" type="text" class="form-control required" placeholder="请输入邮箱主机" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="formTitle"> 邮件签名</th>
+                                            <td class="formValue">
+                                                <input id="MailSign" name="MailSign" type="text" class="form-control required" placeholder="请输入邮件签名" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>

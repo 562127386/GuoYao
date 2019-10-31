@@ -1,0 +1,12 @@
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.Work.xml
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.Work.dll
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.Work.pdb
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.Work\Senparc.Weixin.Work\obj\Release\Senparc.Weixin.Work.csprojResolveAssemblyReference.cache
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.Work\Senparc.Weixin.Work\obj\Release\Senparc.Weixin.Work.dll
+D:\User\Desktop\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.Work\Senparc.Weixin.Work\obj\Release\Senparc.Weixin.Work.pdb
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.Work.xml
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.Work.dll
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.MP.BuildOutPut\.net4.5\Senparc.Weixin.Work.pdb
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.Work\Senparc.Weixin.Work\obj\Release\Senparc.Weixin.Work.csprojResolveAssemblyReference.cache
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.Work\Senparc.Weixin.Work\obj\Release\Senparc.Weixin.Work.dll
+H:\国药项目\国药项目\Project\JFineV3.0-GY\Senparc.Weixin.Work\Senparc.Weixin.Work\obj\Release\Senparc.Weixin.Work.pdb

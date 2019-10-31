@@ -1,0 +1,188 @@
+﻿
+ @*------------------------------------------------------------------------------
+ *     此代码由T4模板自动生成
+ *	   生成时间 2018-12-05 12:16:10
+ *     ©为之团队
+ *------------------------------------------------------------------------------*@
+
+ @{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form2.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+	initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/GY/GY_QX/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                }
+            });
+        }
+    });
+
+	 //初始化组件
+    function initControl()
+    {
+        //编号
+        $("#fnumber").bindSelect({
+            url: "/GY/GY_CJ/GetAllCombox",
+            search: true,
+            change: function (data) {
+                $.ajax({
+                    url: "/GY/GY_CJ/GetByCode",
+                    type: "post",
+                    data: { "keyword": data.id },
+                    dataType: "json",
+                    success: function (msg) {
+                        if (msg.length != 0) {
+                            $("#fname").val(msg[0].name);
+                        } else {
+                            $("#fname").val("");
+                        }
+                    },
+                    error: function () { }
+                });
+            }
+
+        });
+
+        //类别
+        $("#typename").bindSelect({
+            id: "text",
+            url: "/SysManage/ItemsDetail/GetSelectJson",
+            param: { code: "QXType" },
+        })
+        
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = $("#form1").formSerialize();
+        $.submitForm({
+            url: "/GY/GY_QX/SaveForm?keyValue=" + keyValue,
+            param: postData,
+            success: function () {
+                var parentTabId = top.$.jfinetab.getCurrentTabParentId();
+                var resultPage = top.$.jfinetab.getTabContentFromId(parentTabId);
+                resultPage.refreshGrid();
+                top.$.jfinetab.closeCurrentTab();
+            }
+        })
+    }
+	//关闭Form
+    function closeForm() {
+        top.$.jfinetab.closeCurrentTab();
+    }
+</script>
+
+<form id="form1">
+    <input type="hidden" id="Id" name="Id" value="" />
+    <div id="jfine-form-container" class="jfine-form-container" border="0">
+        <table id="jfine-form-maintable" class="jfineui jfine-form-maintable" style="table-layout: fixed;"
+               border="0" cellspacing="0" cellpadding="0" align="center">
+            <tbody>
+                <tr id="jfine-form-titlebg" class="jfine-form-titlebg">
+                    <td>
+                        <table align="center" border="0" style="margin: 0px auto; width: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="jfine-form-header_l">
+                                        <span class="jfine-form-logo">
+                                            <img src="/Content/images/GYlogo.png" />
+                                        </span>
+                                    </td>
+                                    <td class="jfine-form-header_c">
+                                        <span class="jfine-form-header-title">器械基本信息</span>
+                                    </td>
+                                    <td class="jfine-form-header_r">
+                                        <div>
+                                            <div class="btn-group">
+                                                <a class="btn btn-info dropdown-text" onclick="submitForm()"><i class="fa fa-send"></i>提交</a>
+                                                <a class="btn btn-warning dropdown-text" onclick="closeForm()"><i class="fa fa-minus"></i>关闭</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="jfine-form-formcontent" class="jfine-form-titlebg" style="">
+                    <td>
+                        <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+                            <table class="form" style="margin-bottom: 10px;">
+								<tr>
+									<th class="formTitle">厂家编号</th>
+									<td class="formValue">
+                                        <select id="fnumber" name="fnumber" style="width:80%;">
+                                            <option></option>
+                                        </select>
+									</td>
+								
+									<th class="formTitle"> 厂家名称</th>
+									<td class="formValue">
+										<input id="fname" name="fname" type="text"
+										 class="form-control  required"  placeholder="请输入厂家名称" />
+									</td>
+								<tr>
+									<th class="formTitle"> 类别</th>
+									<td class="formValue">
+                                        <select id="typename" name="typename" style="width:30%;">
+                                            <option></option>
+                                        </select>
+								</tr>
+					 	  	
+								<tr>
+									<th class="formTitle"> 器械编号</th>
+									<td class="formValue">
+										<input id="pnumber" name="pnumber" type="text"
+										 class="form-control  required"  placeholder="请输入器械编号" />
+									</td>
+								
+									<th class="formTitle"> 器械名称</th>
+									<td class="formValue">
+										<input id="pname" name="pname" type="text"
+										 class="form-control  required"  placeholder="请输入器械名称" />
+									</td>
+								</tr>
+					 	  	
+								<tr>
+									<th class="formTitle"> 规格</th>
+									<td class="formValue">
+										<input id="spec" name="spec" type="text"
+										 class="form-control  required"  placeholder="请输入规格" />
+									</td>
+								
+									<th class="formTitle"> 单位</th>
+									<td class="formValue">
+                                        <input id="unit" name="unit" type="text"
+                                               class="form-control  required " placeholder="请输入单位" />
+									</td>
+								</tr>
+					 	  	
+								<tr>
+									<th class="formTitle"> 状态</th>
+                                    <td class="formValue">
+                                        <select id="status" name="status" class="selection" style="width: 80px; text-align: center;">
+                                            <option value="1" selected="selected">有效</option>
+                                            <option value="0">无效</option>
+                                        </select>
+                                    </td>
+								</tr>
+					   
+							</table>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JFine.Cache</name>
+    </assembly>
+    <members>
+        <member name="T:JFine.Cache.Cache">
+            <summary>
+            .net自带缓存类
+            </summary>
+        </member>
+        <member name="M:JFine.Cache.ICache.WriteCache``1(System.String,``0,System.Boolean,System.Int32,System.Boolean)">
+            <summary>
+            写入Cache
+            </summary>
+            <typeparam name="T">泛型</typeparam>
+            <param name="cacheKey">Key</param> 
+            <param name="value">Value</param>   
+            <param name="isExpire">是否过期,默认是</param>
+            <param name="timeInterval">时间间隔(分钟),默认10分钟</param>
+            <param name="isSliding">是否滑动缓存。默认是</param>
+        </member>
+        <member name="M:JFine.Cache.ICache.WriteCache``1(System.String,``0,System.DateTime)">
+            <summary>
+            写入Cache
+            </summary>
+            <typeparam name="T">泛型</typeparam>
+            <param name="value">Value</param>
+            <param name="cacheKey">Key</param>
+            <param name="expireTime">过期时间</param>
+        </member>
+        <member name="M:JFine.Cache.ICache.RemoveCache(System.String)">
+            <summary>
+            根据key删除Cache
+            </summary>
+            <param name="cacheKey">key</param>
+        </member>
+        <member name="M:JFine.Cache.ICache.RemoveCache">
+            <summary>
+            清空所有Cache
+            </summary>
+        </member>
+        <member name="M:JFine.Cache.Cache.WriteCache``1(System.String,``0,System.Boolean,System.Int32,System.Boolean)">
+            <summary>
+            写入Cache
+            </summary>
+            <typeparam name="T">泛型</typeparam>
+            <param name="cacheKey">Key</param> 
+            <param name="value">Value</param>   
+            <param name="isExpire">是否过期,默认是</param>
+            <param name="timeInterval">时间间隔(分钟),默认10分钟</param>
+            <param name="isSliding">是否滑动缓存。默认是</param>
+        </member>
+        <member name="M:JFine.Cache.Cache.WriteCache``1(System.String,``0,System.DateTime)">
+            <summary>
+            写入Cache
+            </summary>
+            <typeparam name="T">泛型</typeparam>
+            <param name="value">Value</param>
+            <param name="cacheKey">Key</param>
+            <param name="expireTime">过期时间</param>
+        </member>
+        <member name="M:JFine.Cache.Cache.RemoveCache(System.String)">
+            <summary>
+            根据key删除Cache
+            </summary>
+            <param name="cacheKey">key</param>
+        </member>
+        <member name="M:JFine.Cache.Cache.RemoveCache">
+            <summary>
+            清空所有Cache
+            </summary>
+        </member>
+    </members>
+</doc>

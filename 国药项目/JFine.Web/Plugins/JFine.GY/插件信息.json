@@ -1,0 +1,12 @@
+﻿{
+    "PluginName": "GY",
+    "FriendlyName": "国药",
+    "Group": "GY",
+    "Version": "1.0",
+    "SupportedVersions": ["3.0"],
+    "Author": "sj",
+    "Sort": 1,
+    "PluginFileName": "JFine.Plugins.GY.dll",
+    "Description": "国药",
+    "LimitedToCustomerRoles": []
+}

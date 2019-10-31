@@ -1,0 +1,166 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2018-12-06 18:24:38
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+@{
+    ViewBag.Title = "个人中心";
+    Layout = "~/Views/Shared/LayoutBui.cshtml";
+}
+<style type="text/css">
+    .personal-header {
+        background: url("images/Personal1-bg-personal1.png") no-repeat;
+        background-size: cover;
+        padding-top: .3rem;
+        padding-bottom: .3rem;
+    }
+
+        .personal-header .personal-img {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            overflow: hidden;
+            margin: 0 auto .2rem auto;
+            text-align: center;
+        }
+
+            .personal-header .personal-img img {
+                width: 100%;
+            }
+
+        .personal-header p {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 0.1rem;
+        }
+
+        .personal-header .name {
+            font-size: 0.26rem;
+        }
+
+        .personal-header .grade {
+            font-size: 0.2rem;
+        }
+
+    .nav-list {
+        border-top: none;
+        margin-top: 0.2rem;
+        padding: 0 0.2rem;
+        background-color: #ffffff;
+    }
+
+        .nav-list .bui-btn {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .nav-list li:first-child {
+            border-top: none;
+        }
+
+        .nav-list .icon i {
+            font-size: 0.4rem;
+        }
+
+        .nav-list .icon {
+            height: 0.42rem;
+        }
+
+        .nav-list .bui-btn {
+            border: none;
+            border-top: 1px solid #efefef;
+        }
+
+    .icon-yellow {
+        color: #ffad03;
+    }
+
+    .icon-thinblue {
+        color: #56ced5;
+    }
+
+    .icon-green {
+        color: #6ed046;
+    }
+
+    .icon-red {
+        color: #fd8886;
+    }
+</style>
+<script>
+
+    var pageview = {};
+
+    bui.ready(function () {
+
+        // 执行初始化
+        pageview.init();
+    })
+
+    pageview.bind = function () {
+
+    }
+    pageview.init = function () {
+
+        this.bind();
+    }
+
+</script>
+
+    <div id="page" class="bui-page">
+        <header class="bui-bar">
+            <div class="bui-bar">
+                <div class="bui-bar-left">
+                    <a class="bui-btn" onclick="bui.back();"><i class="icon-back"></i></a>
+                </div>
+                <div class="bui-bar-main">个人信息</div>
+                <div class="bui-bar-right">
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="personal-header">
+                <div class="personal-img">
+                    <img src="/Content/images/headImage/head-default.png">
+                </div>
+                <p class="name">@ViewBag.UserName</p>
+                <p class="grade">帐号：@ViewBag.Account</p>
+            </div>
+            <ul class="bui-list nav-list">
+                <li class="bui-btn bui-box ">
+                    <div class="icon"><i class="icon-favfill icon-yellow"></i></div>
+                    <div class="span1">公司：@ViewBag.CompanyName</div>
+                    <i class="icon-listright"></i>
+                </li>
+                <li class="bui-btn bui-box">
+                    <div class="icon"><i class="icon icon-thinblue">&#xe64f;</i></div>
+                    <div class="span1">部门：@ViewBag.DepartmentName</div>
+                    <i class="icon-listright"></i>
+                </li>
+                <li class="bui-btn bui-box">
+                    <div class="icon"><i class="icon icon-green">&#xe62d;</i></div>
+                    <div class="span1">岗位：@ViewBag.RoleName</div>
+                    <i class="icon-listright"></i>
+                </li>
+                <li class="bui-btn bui-box">
+                    <div class="icon"><i class="icon icon-red">&#xe666;</i></div>
+                    <div class="span1">邮箱：@ViewBag.Email</div>
+                    <i class="icon-listright" ></i>
+                </li>
+            </ul>
+        </main>
+        <footer style="left: 0; position: fixed; bottom: 0; width: 100%;">
+            <!-- 底部d导航栏 -->
+            <ul class="bui-nav footer-nav">
+                <li class="bui-btn bui-box-vertical active"><a href="/GY/GY_M/Index_m"><i class="icon">&#xe659;</i><div class="span1">首页</div></a></li>
+                @*<li class="bui-btn bui-box-vertical"><i class="icon">&#xe62d;</i><div class="span1">通讯录</div></li>*@
+                @*<li class="bui-btn bui-box-vertical big-btn"><a href="/GY/GY_M/GY_BLIndex_m"><i class="icon">&#xe61d;</i></a></li>*@
+                @*<li class="bui-btn bui-box-vertical"><i class="icon">&#xe65b;</i><div class="span1">应用</div></li>*@
+                <li class="bui-btn bui-box-vertical"><a href="/GY/GY_M/Personal_m"><i class="icon">&#xe67a;</i><div class="span1">我的</div></a></li>
+            </ul>
+        </footer>
+    </div>
+
+
