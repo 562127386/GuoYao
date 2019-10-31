@@ -1,0 +1,170 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2018-12-06 18:24:38
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+
+
+    $(function () {
+        
+        gridList();
+        initControl();
+    });
+
+    //
+    function gridList() {
+       
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/GY/GY_SCTG/GetGridSee",
+            height: $(window).height() - 168,
+            //postData: { queryJson: JSON.stringify(queryJson) },
+            colModel: [
+
+					{ label: "主键", name: "Id", width: 150, align: 'left', hidden: true },
+
+					{ label: "活动名称", name: "activity", width: 150, align: 'left' },
+
+					{ label: "活动开始时间", name: "starttime", width: 150, align: 'left' },
+
+					{ label: "活动结束时间", name: "endtime", width: 150, align: 'left' },
+
+					{ label: "活动人数", name: "peopleno", width: 150, align: 'left' },
+
+					{ label: "活动概述", name: "overview", width: 150, align: 'left' },
+
+					{ label: "照片", name: "photo", width: 150, align: 'left' },
+
+					{ label: "服务商", name: "CreateUserName", width: 150, align: 'left' },
+
+					{ label: "支持厂家编号", name: "bfactorycode", width: 150, align: 'left', hidden: true },
+
+					{ label: "支持厂家", name: "bfactoryname", width: 150, align: 'left' },
+
+					{ label: "创建日期", name: "CreateDate", width: 150, align: 'left', hidden: true },
+
+					{ label: "创建用户账户", name: "CreateUserId", width: 150, align: 'left', hidden: true },
+
+					{ label: "最后修改时间", name: "UpdateDate", width: 150, align: 'left', hidden: true },
+
+					{ label: "最后修改用户", name: "UpdateUserId", width: 150, align: 'left', hidden: true },
+
+					{ label: "最后修改用户名称", name: "UpdateUserName", width: 150, align: 'left', hidden: true },
+
+					{ label: "扩展字段4", name: "extend4", width: 150, align: 'left', hidden: true },
+
+					{ label: "扩展字段5", name: "extend5", width: 150, align: 'left', hidden: true },
+
+            ],
+            pager: "#gridPager",
+            sortname: 'CreateDate desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            var queryJson = {
+                startDate: $("#startDate").val(),
+                endDate: $("#endDate").val(),
+                searchYY: $("#searchYY").val(),
+                searchCJ: $("#searchCJ").val(),
+                searchQX: $("#searchQX").val()
+            }
+            $gridList.jqGrid('setGridParam', {
+                postData: { queryJson: JSON.stringify(queryJson) }, page: 1
+            }).trigger('reloadGrid');
+        });
+    }
+    function initControl() {
+
+        $("#searchYY").bindSelect({
+            id: "text",
+            url: "/GY/GY_YY/GetTreeSelectJson",
+            placeholder: "请选择医院",
+            search:true
+        });
+        $("#searchCJ").bindSelect({
+            id: "text",
+            url: "/GY/GY_CJ/GetTreeSelectJson",
+            placeholder: "请选择厂家",
+            search: true
+        });
+    }
+    function btn_details() {
+        /*var keyValue = $("#gridList").jqGridRowValue().Id;      
+		if ($.checkedArray(keyValue))
+		 {
+			$.modalOpen({
+				id: "Details",
+				title: "查看厂家基本信息",
+				url: "/GY/GY_CJ/Details?keyValue=" + keyValue,
+				width: "550px",
+				height: "620px",
+				btn: null,
+			});
+		  }*/
+        var parentId = top.$.jfinetab.getCurrentTabId();
+        var Id = $("#gridList").jqGridRowValue().Id;
+        if ($.checkedArray(Id)) {
+            top.$.jfinetab.addTabContent("/GY/GY_SCTG/Details?keyValue=" + Id, "市场推广--查看", parentId + "_view", parentId);
+        }
+    }
+
+</script>
+<div class="topPanel">
+   
+    <div class="search">
+        <table>
+            <tr>
+                <td style="padding-left:10px;">提报日期:</td>
+                <td style="padding-left:5px;">
+                    <div class="input-group">
+                        <input id="startDate" type="text" class="form-control Wdate"
+                               onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})" placeholder="提报日期" style="width:100px">
+                    </div>
+                </td>
+                <td style ="padding-left:5px;">--</td>
+                <td style="padding-left:5px;">
+                    <div class="input-group">
+                        <input id="endDate" type="text" class="form-control Wdate"
+                               onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})" placeholder="提报日期" style="width:100px" />
+                    </div>
+                </td>
+                <td style="padding-left:20px;">医院名称:</td>
+                <td style="padding-left:5px;">
+                    <div class="input-group">
+                        <select id="searchYY" name="searchYY">
+                            <option></option>
+                        </select>
+                    </div>
+                </td>
+                <td style="padding-left:20px;">厂家名称:</td>
+                <td style="padding-left:5px;">
+                    <div class="input-group">
+                        <select id="searchCJ" name="serchCJ">
+                            <option></option>
+                        </select>
+                    </div>
+                </td>
+                <td style="padding-left:20px;">器械名称:</td>                 
+                <td style="padding-left:5px;">
+                    <div class="input-group">
+                        <input id="searchQX" name="serchQX" class="form-control" style="width: 200px;" placeholder="请输入器械名称" />
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+                <td style ="padding-left:20px;"><a id="JF-Details" class="btn btn-primary dropdown-text" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

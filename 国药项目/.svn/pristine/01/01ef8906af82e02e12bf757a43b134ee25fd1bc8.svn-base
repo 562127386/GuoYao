@@ -1,0 +1,233 @@
+﻿/********************************************************************************
+**文 件 名:GY_BLRepository
+**命名空间:JFine.Plugins.GY.Busines.GY
+**描    述:
+**
+**
+**版 本 号:V1.0.0.0
+**创 建 人:此代码由T4模板自动生成
+**创建日期:2018-12-06 18:22:49
+**修 改 人:
+**修改日期:
+**修改描述:
+**
+**
+**版权所有: ©为之团队
+*********************************************************************************/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using JFine.Data;
+using JFine.Plugins.GY.Domain.Models.GY;
+using JFine.Data.Repository;
+using JFine.Plugins.GY.Domain.IRepository.GY;
+using JFine.Common.UI;
+using JFine.Common.Extend;
+using JFine.Common.Json;
+using System.Data.Common;
+using System.Linq.Expressions;
+using System.Data;
+
+namespace JFine.Plugins.GY.Domain.Repository.GY
+{	
+	/// <summary>
+	/// GY_BLRepository
+	/// </summary>	
+	public class GY_BLRepository:RepositoryFactory<GY_BLEntity>, IGY_BLRepository
+	{
+		 #region 数据获取       
+        /// <summary>
+        /// 获取主子表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetLists(string where, List<DbParameter> param, Pagination pag, string master)
+        {
+            var strsql = new StringBuilder();
+            strsql.AppendFormat(@"SELECT {0}.*
+                            FROM {0}
+                            WHERE 1=1 ",master);
+            strsql.Append(where);
+            return this.BaseRepository().FindTable(strsql.ToString(), param, pag);
+        }
+
+
+        /// <summary>
+        /// 列表
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetList()
+        {
+            return this.BaseRepository().IQueryable().OrderByDescending(t => t.CreateDate).ToList();
+        
+		}
+
+		/// <summary>
+        /// 列表
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetListBySql(string sqlWhere)
+        {
+            var strSql = new StringBuilder();
+            strSql.Append(@"SELECT * 
+                            FROM   patientinfo
+                            WHERE  1=1 ");
+            strSql.Append(sqlWhere);
+            return this.BaseRepository().FindList(strSql.ToString());
+        
+		}
+
+		/// <summary>
+        /// 列表-分页
+        /// </summary>
+        /// <param name="pagination">分页</param>
+        /// <param name="sqlWhere">查询条件</param>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetPageListBySql(Pagination pagination, string sqlWhere, List<DbParameter> parameter)
+        {
+
+            var strSql = new StringBuilder();
+            strSql.Append(@"SELECT * 
+                            FROM   patientinfo
+                            WHERE  1=1 ");
+            strSql.Append(sqlWhere);
+
+            return this.BaseRepository().FindList(strSql.ToString(),parameter, pagination);
+
+        }
+
+		/// <summary>
+        /// 列表
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetList(Expression<Func<GY_BLEntity, bool>> condition)
+        {
+            return this.BaseRepository().IQueryable(condition).ToList();
+
+        }
+
+
+		/// <summary>
+        /// 列表--分页
+        /// </summary>
+        /// <param name="pagination">分页</param>
+        /// <param name="queryJson">查询参数</param>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetPageList(Pagination pagination, Expression<Func<GY_BLEntity, bool>> condition)
+        {
+            return this.BaseRepository().FindList(condition, pagination);
+        }
+
+        /// <summary>
+        /// 实体
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public GY_BLEntity GetForm(string keyValue)
+        {
+            return this.BaseRepository().FindEntity(keyValue);
+        }
+        #endregion
+
+        #region 数据处理
+        
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="gY_BLEntity">实体</param>
+        /// <returns></returns>
+        public void SaveForm(string keyValue, GY_BLEntity gY_BLEntity, string ScoreList)
+        {
+            JFine.Data.Repository.IRepositoryBase db = new RepositoryFactory().BaseRepository().BeginTrans();
+            if (!string.IsNullOrEmpty(keyValue))
+            {
+                gY_BLEntity.Modify(keyValue);
+                db.Update(gY_BLEntity);
+                //this.BaseRepository().Update(gY_BLEntity);
+            }
+            else
+            {
+                gY_BLEntity.Create();
+                db.Insert(gY_BLEntity);
+                //this.BaseRepository().Insert(gY_BLEntity);
+            }
+            List<GY_BL_DEntity> list_item = ScoreList.ToList<GY_BL_DEntity>();
+            var sql = new StringBuilder();
+            sql.AppendFormat("DELETE FROM patientinfod WHERE BindId='{0}'", gY_BLEntity.Id);
+            db.ExecuteBySql(sql.ToString());
+           
+            foreach (var item in list_item)
+            {
+                item.BindId = gY_BLEntity.Id;
+                item.Create();
+                db.Insert(item);
+            }
+
+
+
+          /*  foreach (var item in list_item)
+            {
+                item.BindId = gY_BLEntity.Id;
+                if (!string.IsNullOrEmpty(item.Id))
+                {
+                    item.Modify(item.Id);
+                    db.Update(item);
+                }
+                else
+                {
+                    item.Create();
+                    db.Insert(item);
+                }
+            }*/
+
+            try
+            {
+                db.Commit();
+            }
+            catch (Exception)
+            {
+                db.Rollback();
+                throw;
+            }
+
+        }
+
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="gY_BLEntity">实体</param>
+        /// <returns></returns>
+        public void SaveForm2(string keyValue, GY_BLEntity gY_BLEntity)
+        {
+            if (!string.IsNullOrEmpty(keyValue))
+            {
+                gY_BLEntity.Modify(keyValue);
+                this.BaseRepository().Update(gY_BLEntity);
+            }
+            else
+            {
+                gY_BLEntity.Create();
+                this.BaseRepository().Insert(gY_BLEntity);
+            }
+           
+
+        }
+
+		/// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        public void DeleteForm(string keyValue)
+        {
+            this.BaseRepository().Delete(keyValue);
+        }
+
+        #endregion
+    }
+}
+
+

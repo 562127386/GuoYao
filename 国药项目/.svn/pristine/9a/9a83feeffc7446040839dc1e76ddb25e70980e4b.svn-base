@@ -1,0 +1,105 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2018-12-06 18:24:38
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+@{
+    ViewBag.Title = "GY_BLIndex_m";
+    Layout = "~/Views/Shared/LayoutBui.cshtml";
+}
+
+<script>
+    bui.ready(function(){
+
+        //折叠面板
+        var uiAccordion = bui.accordion({
+            id:".bui-panel",    //必须
+            handle: ".bui-panel-head",  //默认,除非修改才需要加
+            target: ".bui-panel-main"  //被控制的目标
+        });
+
+
+        //默认全部展开
+        //uiAccordion.showAll();
+    })
+</script>
+
+    <div class="bui-page">
+        <header class="bui-bar">
+            <div class="bui-bar-left">
+                <a class="bui-btn" onclick="bui.back();"><i class="icon-back"></i></a>
+            </div>
+            <div class="bui-bar-main">选择器械</div>
+            <div class="bui-bar-right">
+            </div>
+        </header>
+        <main>
+            <!-- 控件结构 -->
+            <div class="bui-panel">
+                <div class="bui-panel-head bui-box-center"><div class="span1">和谐医院</div><i class="icon-accordion"></i></div>
+                <div class="bui-panel-main">
+                    <!-- 示例搜索过滤 -->
+                    <div class="bui-filter bui-fluid-space-3">
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="X光" check="X光">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="B超" check="B超">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="眼疗仪" check="眼疗仪">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="透析" check="透析">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="新品" check="新品">
+                        </div>
+                    </div>
+                </div>
+                <div class="bui-panel-head bui-box-center"><div class="span1">曙光医院</div><i class="icon-accordion"></i></div>
+                <div class="bui-panel-main">
+                    <!-- 示例搜索过滤 -->
+                    <div class="bui-filter bui-fluid-space-3">
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="X光" check="X光">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="B超" check="B超">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="眼疗仪" check="眼疗仪">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="透析" check="透析">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="新品" check="新品">
+                        </div>
+                    </div>
+                </div>
+                <div class="bui-panel-head bui-box-center"><div class="span1">速达医院</div><i class="icon-accordion"></i></div>
+                <div class="bui-panel-main">
+                    <!-- 示例搜索过滤 -->
+                    <div class="bui-filter bui-fluid-space-3">
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="X光" check="X光">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="B超" check="B超">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="眼疗仪" check="眼疗仪">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="透析" check="透析">
+                        </div>
+                        <div class="span1">
+                            <input class="bui-check" type="checkbox" name="service" uncheck="新品" check="新品">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>

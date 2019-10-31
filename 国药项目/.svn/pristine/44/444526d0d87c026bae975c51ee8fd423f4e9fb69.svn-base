@@ -1,0 +1,220 @@
+﻿
+/********************************************************************************
+**文 件 名:GY_BLBLL
+**命名空间:JFine.Plugins.GY.Busines.GY
+**描    述:
+**
+**
+**版 本 号:V1.0.0.0
+**创 建 人:此代码由T4模板自动生成
+**创建日期:2018-12-06 18:22:44
+**修 改 人:
+**修改日期:
+**修改描述:
+**
+**
+**版权所有: ©为之团队
+*********************************************************************************/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using JFine.Plugins.GY.Domain.Models.GY;
+using JFine.Plugins.GY.Domain.IRepository.GY;
+using JFine.Plugins.GY.Domain.Repository.GY;
+using JFine.Cache;
+using JFine.Common.UI;
+using JFine.Common.Extend;
+using JFine.Common.Json;
+using JFine.Data.Common;
+using System.Linq.Expressions;
+using System.Data.Common;
+using System.Data;
+
+namespace JFine.Plugins.GY.Busines.GY
+{	
+	/// <summary>
+	/// GY_BLBLL
+	/// </summary>	
+	public class GY_BLBLL
+	{
+	    private IGY_BLRepository service=new GY_BLRepository();
+
+		/// <summary>
+        /// 缓存key
+        /// </summary>
+        public string cacheKey ="GY_BLCache" ;
+
+        #region 数据获取
+
+        /// <summary>
+        /// 列表
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetList()
+        {
+            return service.GetList();
+        }
+
+		/// <summary>
+        /// 列表
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetListBySql( string sqlWhere)
+        {
+			return service.GetListBySql(sqlWhere);
+        }
+
+		/// <summary>
+        /// 列表--分页
+        /// </summary>
+        /// <param name="pagination">分页</param>
+        /// <param name="queryJson">查询参数</param>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetPageListBySql(Pagination pagination, string queryJson)
+        {
+            var sqlWhere = new StringBuilder();
+            var queryParam = queryJson.ToJObject();
+			 List<DbParameter> parameter =  new List<DbParameter>();
+            //查询条件
+            if (!queryParam["keyword"].IsEmpty())
+            {
+                string keyword = queryParam["keyword"].ToString();
+                sqlWhere.Append(" AND (Code like @keyword or Name like @keyword)");
+				parameter.Add(DbParameters.CreateDbParameter("@keyword","%"+ keyword +"%",DbType.AnsiString));
+            }
+            
+            return service.GetPageListBySql(pagination, sqlWhere.ToString(),parameter);
+        }
+
+		/// <summary>
+        /// 列表
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetList( string queryJson)
+        {
+             var expression = LinqExtensions.True<GY_BLEntity>();
+            var queryParam = queryJson.ToJObject();
+            //查询条件
+            if (!queryParam["Name"].IsEmpty())
+            {
+                string name = queryParam["Name"].ToString();
+                expression = expression.And(t => t.pname.Contains(name));
+            }
+			return service.GetList(expression);
+        }
+
+        /// <summary>
+        /// 列表--分页
+        /// </summary>
+        /// <param name="pagination">分页</param>
+        /// <param name="queryJson">查询参数</param>
+        /// <returns></returns>
+        public IEnumerable<GY_BLEntity> GetPageList(Pagination pagination, string queryJson)
+        {
+			var expression = LinqExtensions.True<GY_BLEntity>();
+            var queryParam = queryJson.ToJObject();
+             //查询条件
+            if (!queryParam["keyword"].IsEmpty())
+            {
+                string keyord = queryParam["keyword"].ToString();
+                expression = expression.And(t => t.pname.Contains(keyord));
+                expression = expression.Or(t => t.hname.Contains(keyord));
+                expression = expression.Or(t => t.CreateUserName.Contains(keyord));
+                expression = expression.Or(t => t.operation.Contains(keyord));
+            }
+            if (!queryParam["status"].IsEmpty())
+            {
+                string status = queryParam["status"].ToString();
+                if (status == "0")
+                {
+                    expression = expression.And(t => t.status.Equals("待审核"));
+                }
+                else if (status == "1")
+                {
+                    expression = expression.And(t => t.status.Equals("通过"));
+                }
+                else if (status == "2")
+                {
+                    expression = expression.And(t => t.status.Equals("不通过"));
+                }
+                
+            }
+            return service.GetPageList(pagination, expression);
+        }
+
+        /// <summary>
+        /// 实体
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <returns></returns>
+        public GY_BLEntity GetForm(string keyValue)
+        {
+            return service.GetForm(keyValue);
+        }
+        #endregion
+
+        #region 数据处理
+
+        
+
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体</param>
+        /// <returns></returns>
+        public void SaveForm(string keyValue, GY_BLEntity gY_BLEntity, string ScoreList)
+        {
+            try
+            {
+                service.SaveForm(keyValue, gY_BLEntity, ScoreList);
+                CacheFactory.Cache().WriteCache(cacheKey,gY_BLEntity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="keyValue">主键值</param>
+        /// <param name="entity">实体</param>
+        /// <returns></returns>
+        public void SaveForm2(string keyValue, GY_BLEntity gY_BLEntity)
+        {
+            try
+            {
+                service.SaveForm2(keyValue, gY_BLEntity);
+                CacheFactory.Cache().WriteCache(cacheKey, gY_BLEntity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+		/// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        public void DeleteForm(string keyValue)
+        {
+            try
+            {
+                service.DeleteForm(keyValue);
+                CacheFactory.Cache().RemoveCache(cacheKey);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #endregion
+
+    }
+}

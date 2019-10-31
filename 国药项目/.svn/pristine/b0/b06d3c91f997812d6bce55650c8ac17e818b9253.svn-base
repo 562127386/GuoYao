@@ -1,0 +1,185 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2018-12-06 18:24:38
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+@{
+    ViewBag.Title = "GY_BLIndex_m";
+    Layout = "~/Views/Shared/LayoutBui.cshtml";
+}
+
+<script>
+    bui.ready(function(){
+
+        var uiList = bui.list({
+            id: "#scrollSearch",
+            url: "http://www.easybui.com/demo/json/shop.json",
+            field: {
+                data:"data"
+            },
+            data: {
+                "keyword":''
+            },
+            page:1,
+            pageSize:5,
+            template: function (data) {
+                var html = "";
+                data.map(function(el, index) {
+
+                    // 处理角标状态
+                    var sub = '' , subClass = '' ;
+                    switch(el.status){
+                        case 1:
+                            sub = '新品';
+                            subClass = 'bui-sub';
+                            break;
+                        case 2:
+                            sub = '热门';
+                            subClass = 'bui-sub danger';
+                            break;
+                        default: 
+                            sub = '';
+                            subClass = '';
+                            break;
+                    }
+
+                    html +='<li class="bui-btn bui-box">'
+                       +' <div class="bui-thumbnail ${subClass}" data-sub="${sub}"><img src="${el.image}" alt=""></div>'
+                        +'<div class="span1">'
+                        +'    <h3 class="item-title">${el.name}</h3>'
+                        +'    <p class="item-text">${el.address}</p>'
+                        +'    <p class="item-text">${el.distance}公里</p>'
+                        +'</div>'
+                        +'<span class="price"><i>￥</i>${el.price}</span>'
+                   +' </li>'
+                });
+
+                return html;
+            }
+        });
+
+        // var n = 0;
+        //搜索条的初始化
+        var uiSearchbar = bui.searchbar({
+            id:"#searchbar",
+            onInput: function(e,keyword) {
+                //实时搜索
+                // console.log(++n)
+            },
+            onRemove: function(e,keyword) {
+                //删除关键词需要做什么其它处理
+                // console.log(keyword);
+            },
+            callback: function (e,keyword) {
+            
+                if( uiList ){
+                
+                    //点击搜索清空数据
+                    uiList.empty();
+                    // 重新初始化数据
+                    uiList.init({
+                        page: 1,
+                        data: {
+                            "keyword":keyword
+                        }
+                    });
+                
+                }
+            }
+
+        });
+    
+    })
+</script>
+
+<div class="bui-page">
+    <header class="bui-bar">
+        <div class="bui-bar-left">
+            <a class="bui-btn" onclick="bui.back();"><i class="icon-back"></i></a>
+        </div>
+        <div class="bui-bar-main">搜索器械</div>
+        <div class="bui-bar-right">
+        </div>
+    </header>
+    <main>
+        <!-- 搜索条控件结构 -->
+        <div id="searchbar" class="bui-searchbar bui-box">
+            <div class="span1">
+                <div class="bui-input">
+                    <i class="icon-search"></i>
+                    <input type="search" value="" placeholder="请输入关键字" />
+                </div>
+            </div>
+            <div class="btn-search">搜索</div>
+        </div>
+        <!-- 列表控件结构 -->
+        <div id="scrollSearch" class="bui-scroll">
+            <div class="bui-scroll-head"></div>
+            <div class="bui-scroll-main">
+                <ul class="bui-list">
+                    <li class="bui-btn">
+                        <a href="/GY/GY_M/BLSelectTypename">
+                            <div class="bui-box">
+                                <div class="span1">
+                                    <h3 class="item-title"><span class="primary-reverse">【系统】</span>系统向您发放400碳币</h3>
+                                    <p class="item-text">2018-02-02 15:04</p>
+                                </div>
+                                <i class="icon-listright"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="warning-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="success-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="primary-reverse">【系统】</span>系统向您发放400碳币</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="warning-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="success-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="primary-reverse">【系统】</span>系统向您发放400碳币</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="warning-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="success-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="success-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="primary-reverse">【系统】</span>系统向您发放400碳币</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="warning-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+                    <li class="bui-btn">
+                        <h3 class="item-title"><span class="success-reverse">【消费】</span>兑换飞影国际电影城优惠券</h3>
+                        <p class="item-text">2018-02-02 15:04</p>
+                    </li>
+</div>
+            <div class="bui-scroll-foot"></div>
+        </div>
+
+    </main>
+</div>

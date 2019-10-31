@@ -1,0 +1,510 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2018-12-06 18:24:36
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form2.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        gridList();
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/GY/GY_SCDY/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                    var arr = data.photoUrl.split("|");
+                    for (i = 0; i < arr.length; i++) {
+                        var html = '<div class="span1" style="width: 25px; height:25px;;float:left;margin-left:8px;">'
+                                 + '<a  href="' + arr[i] + '" target="_Blank">'
+                                 + ' <div class="bui-upload-thumbnail"><img src="' + arr[i] + '" alt="" style="width:100%;height:100%;display:block;overflow: hidden;vertical-     align: middle;text-align: center;" /><i class="icon-removefill"></i></div>'
+                                 + '</a>'
+                                 + ' </div>'
+                        $("#thumbnail").append(html);
+                    }
+                }
+            });
+        }
+       
+    });
+
+
+    function gridList() {
+
+        var $gridList = $("#gridList");
+        if (keyValue == "" || keyValue == null || keyValue == undefined) {
+            var query = {};
+            query.keyValue = "-1";
+        } else {
+            var query = {};
+            query.keyValue = keyValue;
+        }
+        $gridList.dataGrid({
+            url: "/GY/GY_SCDY_D/GetGridJson",
+            height: $(window).height() - 458,
+            postData: { queryJson: JSON.stringify(query) },
+            colModel: [
+
+					{ label: "主键", name: "Id", width: 150, align: 'left', hidden: true },
+
+					{ label: "BindId", name: "BindId", width: 150, align: 'left', hidden: true },
+
+					{ label: "创建日期", name: "CreateDate", width: 150, align: 'left', hidden: true },
+
+					{ label: "创建用户账户", name: "CreateUserId", width: 150, align: 'left', hidden: true },
+
+					{ label: "创建用户名称", name: "CreateUserName", width: 150, align: 'left', hidden: true },
+
+					{ label: "最后修改时间", name: "UpdateDate", width: 150, align: 'left', hidden: true },
+
+					{ label: "最后修改用户", name: "UpdateUserId", width: 150, align: 'left', hidden: true },
+
+					{ label: "最后修改用户名称", name: "UpdateUserName", width: 150, align: 'left', hidden: true },
+
+					{ label: "编号", name: "fnumber", width: 150, align: 'left' },
+
+					{ label: "厂家名称", name: "fname", width: 150, align: 'left' },
+
+					{ label: "类别", name: "typename", width: 150, align: 'left' },
+
+					{ label: "器械编号", name: "pnumber", width: 150, align: 'left' },
+
+					{ label: "器械名称", name: "pname", width: 150, align: 'left' },
+
+					{ label: "规格", name: "spec", width: 150, align: 'left' },
+
+					{ label: "数量", name: "quantity", width: 150, align: 'left', editable: true, editrules: { required: true, integer: true }, edittype: "text" },
+
+					{ label: "单位", name: "unit", width: 150, align: 'left' },
+
+            ],
+            pager: "#gridPager",
+            sortname: 'CreateDate desc',
+            viewrecords: true,
+            cellEdit: true,
+            cellsubmit: "clientArray"
+
+        });
+    }
+
+
+    //初始化组件
+    function initControl() {
+        //初始化工作
+
+        $("#hname").bindSelect({
+            url: "/GY/GY_YY/GetTreeSelectJson",
+            //defaultContent: "<option>请选择</option>",
+            //text: "text",
+            search: true,
+            change: function (data) {
+                // var option = $("#BaseSubName option:selected").text(); //获取选中的项
+                //$("#hname").val(data.text);
+
+            }
+        });
+        $("#bfactoryname").bindSelect({
+            url: "/GY/GY_CJ/GetTreeSelectJson",
+            placeholder: "请选择厂家",
+            search: true
+        });
+
+        //项目状态
+        $("#psex").bindSelect({
+            url: "/SysManage/ItemsDetail/GetSelectJson",
+            id: "text",
+            param: { Code: "sex" }
+        });
+    
+    }
+    function submitForm() {
+        var $gridList = $("#gridList");
+        //var keyValue = $gridList.jqGridRowValue().Id;
+        var lastsel = $gridList.jqGrid('getGridParam', 'selrow');
+        $gridList.jqGrid('saveCell', lastsel, 15);
+        //住院
+        if ($("#isinhospital").children('option:selected').val() == 1) {
+            $("#hospitalnum").addClass('required');
+            $("#bednum").addClass('required');
+        } else {
+            $("#hospitalnum").removeClass('required');
+            $("#bednum").removeClass('required');
+        }
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = {};
+        postData = $("#form1").formSerialize();
+        var data = $("#gridList").jqGrid("getRowData");
+        for (var i in data) {
+            if (data[i].quantity == undefined || data[i].quantity == null || data[i].quantity == "" || data[i].quantity == 'null' || data[i].quantity == 'undefined') {
+                $.modalAlert("请为器械【" + data[i].pname + "】输入数量+", "error");
+                return false;
+            }
+        }
+        postData.ScoreList = JSON.stringify(data);
+        $.submitForm({
+            url: "/GY/GY_SCDY/SaveForm?keyValue=" + keyValue,
+            param: postData,
+            success: function () {
+                var parentTabId = top.$.jfinetab.getCurrentTabParentId();
+                var resultPage = top.$.jfinetab.getTabContentFromId(parentTabId);
+                resultPage.refreshGrid();
+                top.$.jfinetab.closeCurrentTab();
+            }
+        })
+    }
+
+    var str = "";
+    function uploadFJ() {
+        $.modalOpen({
+            id: "UpLoadForm",
+            title: "上传协同任务附件",
+            url: "/SysCommon/Common/UpLoadBF?modelName=JSFW",
+            width: "600px",
+            height: "600px",
+            btn: null
+        });
+
+    }
+
+    //上传回调
+    function refreshFiles(result) {
+        var photo = $("#photo").val();
+        var photoUrl = $("#photoUrl").val();
+        if (photoUrl == null || photoUrl == "") {
+            $("#photo").val(result.filename_o);
+            $("#photoUrl").val(result.path);
+        } else {
+            $("#photo").val(photo + "|" + result.filename_o);
+            $("#photoUrl").val(photoUrl + "|" + result.path);
+        }
+        var html = '<div class="span1" style="width: 25px; height:25px;;float:left;margin-left:8px;">'
+                          + '<a  href="' + result.path + '"target="_Blank">'
+                         + ' <div class="bui-upload-thumbnail"><img src="' + result.path + '" alt="" style="width:100%;height:100%;display:block;overflow: hidden;vertical-align: middle;text-align: center;" /><i class="icon-removefill"></i></div>'
+                         + '</a>'
+                    + ' </div>'
+        $("#thumbnail").append(html);
+    }
+
+    function addProduct() {
+        $.modalOpen({
+            id: "SelectIndex",
+            title: "设备付款明细",
+            url: "/GY/GY_SCDY_D/SelectIndex?keyValue=" + keyValue,
+            width: "800px",
+            height: "550px",
+            //btn: null,
+            //btn: ['确认'],
+            btnclass: ['btn btn-primary btnclose', 'btn btn-danger'],
+            callBack: function (iframeId) {
+                //top.frames[iframeId].submitForm();
+                var Data = top.frames[iframeId].submitForm();
+                for (var r in Data) {
+                    var i = $("#gridList").jqGrid("getDataIDs");
+                    $("#gridList").jqGrid("addRowData", i.length + 1, Data[r], i.length + 1);
+                }
+                //location.reload();
+                //var parentTabId = top.$.jfinetab.getCurrentTabParentId();
+                //top.$.jfinetab.RefreshTabFromId(parentTabId);
+                //top.$.jfinetab.reload();
+            }
+        });
+    }
+
+
+    function deleteProduct() {
+        var keyValue = $("#gridList").jqGridRowValue().Id;
+        var ids = jQuery("#gridList").jqGrid("getGridParam", "selrow");
+        //$("#gridList").jqGrid("delRowData", keyValue);
+        $("#gridList").jqGrid("delRowData", ids);
+        if (keyValue != undefined && keyValue != null && keyValue != "" && keyValue != 'null' && keyValue != 'undefined') {
+            $.deleteForm({
+                url: "/GY/GY_SCDY_D/DeleteForm",
+                param: { keyValue: keyValue },
+                success: function () {
+                    //$.currentWindow().$("#gridList").trigger("reloadGrid");
+                }
+            });
+        }
+
+    }
+
+    //关闭Form
+    function closeForm() {
+        top.$.jfinetab.closeCurrentTab();
+    }
+</script>
+
+<form id="form1">
+    <input type="hidden" id="Id" name="Id" value="" />
+    <div id="jfine-form-container" class="jfine-form-container" border="0">
+        <table id="jfine-form-maintable" class="jfineui jfine-form-maintable" style="table-layout: fixed;"
+               border="0" cellspacing="0" cellpadding="0" align="center">
+            <tbody>
+                <tr id="jfine-form-titlebg" class="jfine-form-titlebg">
+                    <td>
+                        <table align="center" border="0" style="margin: 0px auto; width: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="jfine-form-header_l">
+                                        <span class="jfine-form-logo">
+                                            <img src="/Content/images/formlogo.png" />
+                                        </span>
+                                    </td>
+                                    <td class="jfine-form-header_c">
+                                        <span class="jfine-form-header-title">市场调研</span>
+                                    </td>
+                                    <td class="jfine-form-header_r">
+                                        <div>
+                                            <div class="btn-group">
+                                                <a class="btn btn-info dropdown-text" onclick="submitForm()"><i class="fa fa-send"></i>提交</a>
+                                                <a class="btn btn-warning dropdown-text" onclick="closeForm()"><i class="fa fa-minus"></i>关闭</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="jfine-form-formcontent" class="jfine-form-titlebg" style="">
+                    <td>
+                        <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+                            <table class="form" style="margin-bottom: 10px;">
+
+                                <tr hidden>
+                                    <th class="formTitle"> 主键</th>
+                                    <td class="formValue">
+                                        <input id="Id" name="Id" type="text"
+                                               class="form-control  required" placeholder="请输入主键" />
+                                    </td>
+                                    <th class="formTitle"> 创建日期</th>
+                                    <td class="formValue">
+                                        <input id="CreateDate" name="CreateDate" type="text"
+                                               class="form-control Wdate required" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="请输入创建日期" />
+                                    </td>
+                                    <th class="formTitle"> 创建用户账户</th>
+                                    <td class="formValue">
+                                        <input id="CreateUserId" name="CreateUserId" type="text"
+                                               class="form-control  required" placeholder="请输入创建用户账户" />
+                                    </td>
+                                    <th class="formTitle"> 最后修改时间</th>
+                                    <td class="formValue">
+                                        <input id="UpdateDate" name="UpdateDate" type="text"
+                                               class="form-control Wdate required" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="请输入最后修改时间" />
+                                    </td>
+                                    <th class="formTitle"> 最后修改用户</th>
+                                    <td class="formValue">
+                                        <input id="UpdateUserId" name="UpdateUserId" type="text"
+                                               class="form-control  required" placeholder="请输入最后修改用户" />
+                                    </td>
+                                    <th class="formTitle"> 最后修改用户名称</th>
+                                    <td class="formValue">
+                                        <input id="UpdateUserName" name="UpdateUserName" type="text"
+                                               class="form-control  required" placeholder="请输入最后修改用户名称" />
+                                    </td>
+                                    <th class="formTitle"> 服务商</th>
+                                    <td class="formValue">
+                                        <input id="CreateUserName" name="CreateUserName" type="text"
+                                               class="form-control  required" placeholder="请输入创建用户名称" />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="formTitle"> 医院</th>
+                                    <td class="formValue">
+                                        <select id="hname" name="hname"
+                                                class="form-control  required" />
+                                    <th class="formTitle">是否住院</th>
+                                    <td class="formValue">
+                                        <select id="isinhospital" name="isinhospital" class="selection" style="width: 80px; text-align: center; ">
+                                            <option value="1" selected="selected">是</option>
+                                            <option value="0">否</option>
+                                        </select>
+                                    </td>
+                                    </td>
+                                   
+                                </tr>
+
+                                <tr>
+                                    <th class="formTitle"> 患者姓名</th>
+                                    <td class="formValue">
+                                        <input id="pname" name="pname" type="text"
+                                               class="form-control  required" placeholder="请输入患者姓名" />
+                                    </td>
+                                    <th class="formTitle"> 患者性别</th>
+                                    <td class="formValue">
+                                        <select id="psex" name="psex"
+                                                class="form-control  required" />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="formTitle"> 患者年龄</th>
+                                    <td class="formValue">
+                                        <input id="page" name="page" type="text"
+                                               class="form-control  required" placeholder="请输入患者年龄" />
+                                    </td>
+                                    <th class="formTitle"> 体重</th>
+                                    <td class="formValue">
+                                        <input id="pweight" name="pweight" type="text"
+                                               class="form-control  required" placeholder="请输入体重" />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="formTitle">病症</th>
+                                    <td class="formValue">
+                                        <input id="symptoms" name="symptoms" type="text"
+                                               class="form-control  required" placeholder="请输入病症" />
+                                    </td>
+                                    <th class="formTitle"> 主治医生</th>
+                                    <td class="formValue">
+                                        <input id="chiefdoctor" name="chiefdoctor" type="text"
+                                               class="form-control  required" placeholder="请输入主治医生" />
+                                    </td>
+                                    
+                                </tr>  
+
+                                <tr>
+                                    <th class="formTitle"> 治疗时间</th>
+                                    <td class="formValue">
+                                        <input id="opertime" name="opertime" type="text"
+                                               class="form-control  required" placeholder="请输入治疗时间（天）" />
+                                    </td>
+                                    <th class="formTitle"> 病史</th>
+                                    <td class="formValue">
+                                        <input id="mhistory" name="mhistory" type="text"
+                                               class="form-control  required" placeholder="请输入病史" />
+                                    </td>
+                                   
+                                   
+                                </tr>
+                                <tr>
+                                    <th class="formTitle"> 住院号</th>
+                                    <td class="formValue">
+                                        <input id="hospitalnum" name="hospitalnum" type="text"
+                                               class="form-control required" placeholder="请输入住院号" />
+                                    </td>
+                                    <th class="formTitle"> 床位号</th>
+                                    <td class="formValue">
+                                        <input id="bednum" name="bednum" type="text"
+                                               class="form-control required" placeholder="请输入床位号" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="formTitle"> 联系方式</th>
+                                    <td class="formValue">
+                                        <input id="linktype" name="linktype" type="text"
+                                               class="form-control  required" placeholder="请输入联系方式" />
+                                    </td>
+                                    <th class="formTitle"> 家属电话</th>
+                                    <td class="formValue">
+                                        <input id="phone" name="phone" type="text"
+                                               class="form-control  required" placeholder="请输入家属电话" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="formTitle"> 支持厂家</th>
+                                    <td class="formValue">
+                                        <select id="bfactoryname" name="bfactoryname" class="form-control" style="width:70%;"></select>
+                                    </td>
+                                    <th class="formTitle"><a class="btn btn-info dropdown-text" onclick="uploadFJ()">上传图片</a></th>
+                                    <td class="formValue" id="thumbnail">
+
+                                    </td>
+                                </tr>
+                               
+                                <tr hidden>
+                                    <th class="formTitle"> 图片名称</th>
+                                    <td class="formValue">
+                                        <input id="photo" name="photo" type="text"
+                                               class="form-control  " placeholder="请输入住院号" readonly />
+                                    </td>
+                                    <th class="formTitle"> 图片路径</th>
+                                    <td class="formValue">
+                                        <input id="photoUrl" name="photoUrl" type="text"
+                                               class="form-control  " placeholder="请输入住院号" readonly />
+                                    </td>
+                                </tr>
+
+                                <tr hidden>
+                                    <th class="formTitle">报告人</th>
+                                    <td class="formValue">
+                                        <input id="reportman" name="reportman" type="text"
+                                               class="form-control  required" placeholder="请输入报告人" />
+                                    </td>
+
+                                    <th class="formTitle"> 审核人</th>
+                                    <td class="formValue">
+                                        <input id="audit" name="audit" type="text"
+                                               class="form-control  required" placeholder="请输入审核人" />
+                                    </td>
+                                    <th class="formTitle"> 审核时间</th>
+                                    <td class="formValue">
+                                        <input id="audittime" name="audittime" type="text"
+                                               class="form-control Wdate required" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="请输入审核时间" />
+                                    </td>
+                                    <th class="formTitle"> 审核意见</th>
+                                    <td class="formValue">
+                                        <input id="auditlog" name="auditlog" type="text"
+                                               class="form-control  required" placeholder="请输入审核意见" />
+                                    </td>
+                                </tr>
+                                <tr hidden>
+                                    <th class="formTitle"> 提报时间</th>
+                                    <td class="formValue">
+                                        <input id="reportdate" name="reportdate" type="text"
+                                               class="form-control Wdate required" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="请输入提报时间" />
+                                    </td>
+                                    <th class="formTitle"> 状态</th>
+                                    <td class="formValue">
+                                        <input id="status" name="status" type="text"
+                                               class="form-control  required" placeholder="请输入状态" value="待审核" />
+                                    </td>
+                                </tr>
+
+                                <tr hidden>
+                                    <th class="formTitle"> 扩展字段1</th>
+                                    <td class="formValue">
+                                        <input id="extend1" name="extend1" type="text"
+                                               class="form-control  required" placeholder="请输入扩展字段1" />
+                                    </td>
+                                    <th class="formTitle"> 扩展字段2</th>
+                                    <td class="formValue">
+                                        <input id="extend2" name="extend2" type="text"
+                                               class="form-control  required" placeholder="请输入扩展字段2" />
+                                    </td>
+                                    
+                                </tr>
+
+                            </table>
+
+
+                            <!-- 产品明细 -->
+                            <div class="btn-group" id="h1">
+                                <a class="btn btn-info dropdown-text" onclick="addProduct()"><i class="fa fa-plus"></i>新增</a>
+                                <a class="btn btn-warning dropdown-text" onclick="deleteProduct()"><i class="fa fa-minus"></i>删除</a>
+
+                            </div>
+                            <div class="gridPanel">
+                                <table id="gridList"></table>
+                                <div id="gridPager"></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+

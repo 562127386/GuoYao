@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<appSettings>
+  <!-- ================== 1：开发系统相关配置 ================== -->
+  <!-- 启用系统日志-->
+  <add key="IsLog" value="true" />
+  <add key="LogFilePath" value="D://JFine_JFGL_log//SysLog" />
+  <!-- 数据库超时间-->
+  <add key="CommandTimeout" value="180" />
+  <!--启用IP过滤 -->
+  <add key="IsIPFilter" value="false" />
+  <!--设置时段过滤 -->
+  <add key="IsTimeFilter" value="false" />
+  <!--系统初始密码-->
+  <add key="InitPassword" value="123456"/>
+  <!--数据库类型-->
+  <add key="DatabaseType" value="MSSQL"/>
+  <!--数据库是否加密-->
+  <add key="ConStringEncrypt" value="true" />
+  
+  <!--验证服务地址 -->
+  <add key="CAHost" value="http://localhost:30844"/>
+  
+  <!-- ================== 2：系统软件参数配置 ================== -->
+  <!-- 软件公司 -->
+  <add key="SoftCompany" value="JFine快速开发框架" />
+  <!-- 客户 -->
+  <add key="CustomerCompany" value="青岛河钢新材" />
+  <!-- 软件名称 -->
+  <add key="SoftName" value="JFine快速开发框架" />
+  <!-- 软件版本 -->
+  <add key="Version" value="3.0" />
+  <!-- 联系我们 -->
+  <add key="Contact" value="www.jfine.cn" />
+  <!-- 软件授权码 测试备用 -->
+  <add key="LicenceKey" value="83eda07f-ead3-4050-bcee-4f41e57a7e16" />
+  <!-- ================== 3：外部邮件参数 ================== -->
+  <!-- 设置邮箱主机 -->
+  <add key="MailHost" value="xcmail.hbisco.com" />
+  <!-- 设置邮箱名称 -->
+  <add key="MailName" value="青岛河钢新材电子招标采购平台" />
+  <!-- 设置邮箱地址 -->
+  <add key="MailUser" value="hgxcmp@hbisco.com" />
+  <!-- 设置邮箱密码 -->
+  <add key="MailPassword" value="@@" />
+  
+  <!--提示信息模板-->
+  <add key="approvalNoticeTitle" value="积分审核公示" />
+  <add key="approvalNoticeMessage" value="亲，您部门下有积分通过审核，请您及时进行推荐。" />
+  
+  <add key="recommendNoticeTitle" value="积分推荐公示" />
+  <add key="recommendNoticeMessage" value="亲，您所在部门《deptName》被推荐的小伙伴有：USERS" />
+  <add key="VailCode" value="您申请找回账号密码的验证码为：CODE,请注意保护您的账号密码！【府新大厦】" />
+  
+  <!-- ================== 4：Quartz参数 ================== -->
+  <!-- 配置线程池 -->
+  <add key="quartz.threadPool.type" value="Quartz.Simpl.SimpleThreadPool, Quartz"/>
+  <add key="quartz.threadPool.threadCount" value="10"/>
+  <add key="quartz.threadPool.threadPriority" value="Normal"/>
+  <!-- 配置作业存储 -->
+  <add key="quartz.jobStore.misfireThreshold" value="60000"/>
+  <add key="quartz.jobStore.type" value="Quartz.Impl.AdoJobStore.JobStoreTX, Quartz"/>
+  <add key="quartz.jobStore.useProperties" value="true"/>
+  <add key="quartz.jobStore.dataSource" value="default"/>
+  <add key="quartz.jobStore.tablePrefix" value="QRTZ_"/>
+  <add key="quartz.jobStore.driverDelegateType" value="Quartz.Impl.AdoJobStore.StdAdoDelegate, Quartz"/>
+  <add key="quartz.jobStore.lockHandler.type" value="Quartz.Impl.AdoJobStore.UpdateLockRowSemaphore, Quartz"/>
+  <add key="quartz.dataSource.default.provider" value="SqlServer-20"/>
+
+  <!-- ================== 5：供应商默认数据 ================== -->
+  <add key="defaultOrgID" value="30a557b1-5a76-4dab-af63-75838ecd2439"/>
+  <add key="defaultDeptID" value="975655493261463552"/>
+  <add key="defaultRoleID" value="975655032546529280"/> 
+  
+  <!-- ================== 5：微信 ================== -->
+  <!--微信appId-->
+  <add key="AppId" value="wx60a5fbfe105430e5" />
+  <add key="AppSecret" value="fa431b890e59844485411ad62e827420" />
+
+  <!--企业微信appId-->
+  <add key="Host" value="http://2218019gx5.51mypc.cn" />
+  <!--<add key="Host" value="http://weixin.wizsen.com:8080" />-->
+  <add key="qy_corpId" value="wx8577a37357854e05" />
+  <add key="qy_agentId" value="1000004" />
+  <add key="qy_corpSecret" value="XMxKupkKTJsDgPqDIYF7VFQqdWk_DGNejFN1A273T70" />
+  <add key="qy_contactSecret" value="mNhjLfLH4NWcpZ4tLy5Q1OuL3ehnAk4vzjLtIQ_5C_M" />
+</appSettings>

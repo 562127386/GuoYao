@@ -1,0 +1,193 @@
+﻿
+ @*------------------------------------------------------------------------------
+ *     此代码由T4模板自动生成
+ *	   生成时间 2018-12-05 09:36:27
+ *     ©为之团队
+ *------------------------------------------------------------------------------*@
+
+ @{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form2.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+	initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/GY/GY_YY/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                }
+            });
+        }
+    });
+
+	 //初始化组件
+    function initControl()
+    {     
+
+        //$("#salesman").select2({
+        //    //placeholder: "please select demo",
+        //    multiple: true,
+        //    closeOnSelect: false
+        //});
+      
+       // $("#select2-salesman-container").empty();
+        $("#salesman").bindSelect({
+            id:"text",
+            url: "/SysManage/User/GetYYFormComboBox",           
+            //url: "/SysManage/ItemsDetail/GetSelectJson",
+            param: { code: "salesman" },
+
+            defaultContent: "",//默认破坏样式
+            multiple: true,
+            closeOnSelect:false
+        });
+
+        $("#salesman").val([""]).trigger("change");
+
+        $("#manager").bindSelect({
+            id: "text",
+            url: "/SysManage/User/GetYYFormComboBox",
+            param: { code: "manager" },            
+        })
+    }
+
+
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = $("#form1").formSerialize();
+        $.submitForm({
+            url: "/GY/GY_YY/SaveForm?keyValue=" + keyValue,
+            param: postData,
+            success: function () {
+                var parentTabId = top.$.jfinetab.getCurrentTabParentId();
+                var resultPage = top.$.jfinetab.getTabContentFromId(parentTabId);
+                resultPage.refreshGrid();
+                top.$.jfinetab.closeCurrentTab();
+            }
+        })
+    }
+	//关闭Form
+    function closeForm() {
+        top.$.jfinetab.closeCurrentTab();
+    }
+</script>
+
+<form id="form1">
+    <input type="hidden" id="Id" name="Id" value="" />
+    <div id="jfine-form-container" class="jfine-form-container" border="0">
+        <table id="jfine-form-maintable" class="jfineui jfine-form-maintable" style="table-layout: fixed;"
+               border="0" cellspacing="0" cellpadding="0" align="center">
+            <tbody>
+                <tr id="jfine-form-titlebg" class="jfine-form-titlebg">
+                    <td>
+                        <table align="center" border="0" style="margin: 0px auto; width: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="jfine-form-header_l">
+                                        <span class="jfine-form-logo">
+                                            <img src="/Content/images/GYlogo.png" />
+                                        </span>
+                                    </td>
+                                    <td class="jfine-form-header_c">
+                                        <span class="jfine-form-header-title">医院基本信息</span>
+                                    </td>
+                                    <td class="jfine-form-header_r">
+                                        <div>
+                                            <div class="btn-group">
+                                                <a class="btn btn-info dropdown-text" onclick="submitForm()"><i class="fa fa-send"></i>提交</a>
+                                                <a class="btn btn-warning dropdown-text" onclick="closeForm()"><i class="fa fa-minus"></i>关闭</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="jfine-form-formcontent" class="jfine-form-titlebg" style="">
+                    <td>
+                        <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+                            <table class="form" style="margin-bottom: 10px;">
+								<tr>
+									<th class="formTitle"> 编号</th>
+									<td class="formValue">
+                                        <input id="number" name="number" type="text" style="width:80%;"
+                                               class="form-control  required" placeholder="请输入编号" />
+									</td>
+								
+									<th class="formTitle"> 医院名称</th>
+									<td class="formValue">
+										<input id="name" name="name" type="text"
+										 class="form-control  required"  placeholder="请输入医院名称" />
+									</td>
+								</tr>
+					 	  	
+								<tr>
+									<th class="formTitle"> 地址</th>
+									<td class="formValue">
+                                        <input id="address" name="address" type="text" style="width:100%;"
+                                               class="form-control  required" placeholder="请输入地址" />
+									</td>
+								</tr>
+					 	  	
+								<tr>
+									<th class="formTitle"> 联系人</th>
+									<td class="formValue">
+                                        <input id="linkman" name="linkman" type="text"
+                                               class="form-control  required" placeholder="请输入联系人" />
+									</td>
+								
+									<th class="formTitle"> 联系电话</th>
+									<td class="formValue">
+                                        <input id="phone" name="phone" type="text"
+                                               class="form-control number required" placeholder="请输入联系电话" />
+									</td>
+								</tr>
+					 	  	
+								<tr>
+									<th class="formTitle"> 业务员</th>
+									<td class="formValue">
+                                        <select id="salesman" name="salesman" class="form-control select2" style="width:55%;">
+                                        </select>
+									</td>
+								
+									<th class="formTitle"> 业务经理</th>
+									<td class="formValue">
+                                        <select id="manager" name="manager" style="width:30%;"></select>
+									</td>
+								</tr>
+					 	  	
+								<tr>
+									<th class="formTitle"> 备注</th>
+									<td class="formValue">
+                                        <textarea id="remark" name="remark" cols="20" wrap="hard"
+                                                  class="form-control" placeholder="请输入备注"></textarea>
+									</td>
+								</tr>
+					 	  	
+								<tr>
+									<th class="formTitle"> 状态</th>
+									<td class="formValue">
+                                        <select id="status" name="status" class="selection" style="width:80px;text-align:center;">
+                                            <option value="1" selected="selected">有效</option>
+                                            <option value="0">无效</option>
+                                        </select>
+									</td>
+								</tr>                   
+							</table>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+

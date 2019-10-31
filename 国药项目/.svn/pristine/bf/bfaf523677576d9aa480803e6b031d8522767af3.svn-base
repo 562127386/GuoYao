@@ -1,0 +1,144 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2018-12-06 18:24:38
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+@{
+    ViewBag.Title = "医院选择";
+    Layout = "~/Views/Shared/LayoutBui.cshtml";
+}
+
+<script>
+    var queryJson = {};
+    var page_jf = {
+        rows: 5,//每页行数
+        page: 1,//当前页
+        sidx: 'Id',//排序列
+        sord: 'asc',//排序类型
+        records: 0,//总记录数
+        total: 0,//总页数
+        LoadEnd: false,
+        queryJson : {}
+        //conditionJson:"1=1"
+    }
+    bui.ready(function(){
+
+        var uiList = bui.list({
+            id: "#scrollSearch",
+            url: "/GY/GY_YY/GetGridJson",
+            //field: {
+            //    page: "page",
+            //    size: "rows",
+            //    data: "data"
+            //},
+            data: page_jf,
+            template: function (data) {
+                var html = "";
+                var status = "";
+                var css = "";
+                var name = "";
+                for (var i = 0; i < data.rows.length; i++) {
+                    if(data.rows[i].status ==1){
+                        status = "有效"
+                        css = "primary-reverse";
+                    }else{
+                        status = "无效"
+                        css = "warning-reverse";
+                    }
+                    name = data.rows[i].name
+                    html += '<li class="bui-btn" onclick="confirmButton('+'\'' + name +'\''+');">'
+                         + '       <h3 class="item-title"><span class="'+css+'">【' + status + '】</span>' + data.rows[i].name + '</h3>'
+                         + '       <p class="item-text">' + data.rows[i].salesman + '</p>'
+                         +' </li>'
+                }
+
+                return html;
+            }
+        });
+
+
+        var uiSearchbar = bui.searchbar({
+            id: "#searchbar",
+            onInput: function (ui, keyword) {
+                //实时搜索
+                //console.log(++n)
+            },
+            onRemove: function (ui, keyword) {
+                //删除关键词需要做什么其它处理
+                // console.log(keyword);
+            },
+            callback: function (ui, keyword) {
+
+                queryJson.keyword = keyword;
+                page_jf.queryJson = JSON.stringify(queryJson);
+                // queryJson = JSON.stringify(queryJson)
+                //点击搜索清空数据
+                uiList.empty();
+                // 重新初始化数据
+                uiList.init({
+
+                    data: page_jf,
+                    onRefresh: onRefresh,
+                    onLoad: onLoad
+                });
+
+
+                // 下拉刷新
+                function onRefresh() {
+
+                }
+                // 上拉加载
+                function onLoad() {
+
+                }
+
+            }
+
+        });
+
+    })
+
+    function confirmButton(name)
+    {
+        var data = {};
+        //data.code = "10001";
+        data.name = name;
+        parent.dealBack(data);
+        parent.layer.closeAll();
+    }
+</script>
+
+<div class="bui-page">
+    @*<header class="bui-bar">
+        <div class="bui-bar-left">
+            <a class="bui-btn" onclick="bui.back();"><i class="icon-back"></i></a>
+        </div>
+        <div class="bui-bar-main">搜索厂家</div>
+        <div class="bui-bar-right">
+            <a class="bui-btn" onclick="confirmButton();">确定</a>
+        </div>
+    </header>*@
+    <main>
+        <!-- 搜索条控件结构 -->
+        <div id="searchbar" class="bui-searchbar bui-box">
+            <div class="span1">
+                <div class="bui-input">
+                    <i class="icon-search"></i>
+                    <input type="search" value="" placeholder="请输入关键字" />
+                </div>
+            </div>
+            <div class="btn-search">搜索</div>
+        </div>
+        <!-- 列表控件结构 -->
+        <div id="scrollSearch" class="bui-scroll">
+            <div class="bui-scroll-head"></div>
+            <div class="bui-scroll-main">
+                <ul class="bui-list">
+
+                </ul>
+            </div>
+            <div class="bui-scroll-foot"></div>
+        </div>
+    </main>
+</div>

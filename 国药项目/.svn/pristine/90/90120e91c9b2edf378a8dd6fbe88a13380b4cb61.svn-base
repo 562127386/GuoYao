@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/css/framework-font.css" rel="stylesheet" />
+    <link href="~/Content/css/framework-ui-m.css" rel="stylesheet" />
+    <link href="~/Content/mobile/jquery-weui/lib/weui.min.css?v=1.0.1" rel="stylesheet" />
+    <link href="~/Content/mobile/jquery-weui/css/jquery-weui.min.css" rel="stylesheet" />
+    <link href="~/Content/css/framework-weui.css?v=1.0.12" rel="stylesheet" />
+    <link href="~/Content/mobile/dialogM/mobile/need/layer.css?v=1.0.1" rel="stylesheet" />
+    <script src="~/Content/mobile/dialogM/mobile/layer.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+    <script src="~/Content/mobile/jquery-weui/lib/jquery-2.1.4.js"></script>
+    <script src="~/Content/mobile/jquery-weui/lib/fastclick.js"></script>
+    <script src="~/Content/mobile/jquery-weui/js/jquery-weui.js"></script>
+    <script src="~/Content/js/common/framework-weui.js?v=1.0.12"></script>
+    <script src="~/Content/js/jsonsql/jsonsql.js"></script>
+    <script>
+        $(function () {
+            FastClick.attach(document.body);
+        });
+    </script>
+</head>
+<body ontouchstart>
+    @RenderBody()
+    @Html.AntiForgeryToken()
+</body>
+</html>

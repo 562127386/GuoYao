@@ -1,0 +1,500 @@
+﻿@*------------------------------------------------------------------------------
+    *     此代码由T4模板自动生成
+    *	   生成时间 2018-12-06 18:24:36
+    *     ©为之团队
+    *------------------------------------------------------------------------------*@
+
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/LayoutBui.cshtml";
+}
+<style type="text/css">
+    /*防止动态增加图标时抖动*/
+    .register-page .bui-input {
+        height: .6rem;
+    }
+
+    .bui-box .span1 > .bui-btn {
+        border-right: 0;
+    }
+
+    .bui-box .span1:first-child > .bui-btn {
+        border-left: 0;
+    }
+
+    .btn-send {
+        display: inline-block;
+        color: #52a4ff;
+        font-size: 0.2rem;
+        padding: 0 0.1rem;
+        min-height: .4rem;
+        height: .5rem;
+        line-height: .5rem;
+        border: 1px solid #52a4ff;
+    }
+
+        .btn-send.disabled {
+            border: 1px solid #dedede;
+        }
+</style>
+<script>
+
+    bui.ready(function () {
+
+        // 多级联动
+        levelSelect();
+
+        // bui.select 的多级联动
+        function levelSelect() {
+            var uiMask = bui.mask();
+            /* 一, 初始化控件 */
+
+            // 城市的数据
+            var chineseCities = {};
+
+            // 厂家
+            var provinceSelect = bui.select({
+                trigger: "#provinceSelect",
+                title: "请选择厂家",
+                type: "radio",
+                height: 600,
+                autoClose: true,
+                field: {
+                    value: "name"
+                },
+                data: []
+            });
+
+            // 类别
+            var citySelect = bui.select({
+                trigger: "#citySelect",
+                title: "请选择类别",
+                type: "radio",
+                height: 600,
+                autoClose: true,
+                field: {
+                    value: "name"
+                },
+                data: []
+            });
+
+            // 地区
+            var areaSelect = bui.select({
+                trigger: "#areaSelect",
+                title: "请选择设备",
+                selector: "",
+                select: "",
+                type: "radio",
+                height: 600,
+                autoClose: true,
+                field: {
+                    value: "name"
+                },
+                data: []
+            });
+
+            /* 二, 监听控件的事件变化 */
+
+            // 选择省份以后
+            provinceSelect.on("change", function () {
+                var index = provinceSelect.index() || 0;
+
+                // 激活第一个城市
+                chineseCities.city = chineseCities.province[index]["city"];
+                citySelect.option("data", chineseCities.city);
+
+                // 显示城市选择
+                citySelect.show("none");
+            })
+
+            // 选择城市以后
+            citySelect.on("change", function () {
+
+                var index = citySelect.index() || 0;
+
+                //设置选择的区域数据
+                chineseCities.area = chineseCities.city[index]["area"] || [];
+                areaSelect.option("data", chineseCities.area)
+                // 激活第一个区域
+                // areaSelect.active(0);
+                // 显示地区选择
+                areaSelect.show("none");
+
+            });
+            // 选择地区以后
+            areaSelect.on("change", function () {
+
+                var province = provinceSelect.text(),
+                        city = citySelect.text(),
+                        area = areaSelect.text(),
+                        address = "";
+
+                if (province == city) {
+                    address = province + area;
+                } else {
+                    address = province + city + area;
+                }
+                // 输出地址
+                console.log(address);
+
+            })
+
+            /* 三, 填充省份的第一个列表 */
+
+            // 获取中国省份的数据
+            bui.ajax({ url: "http://www.easybui.com/demo/json/chineseCities.json" }).done(function (datas) {
+                //省份数据
+                chineseCities.province = datas.data;
+                //初始化省份的select
+                provinceSelect.option("data", datas.data);
+            })
+
+        }
+    })
+
+    var pageview = {};
+    bui.ready(function () {
+
+        // 页面初始化
+        pageview.init();
+    })
+
+    pageview.bind = function () {
+
+        /*初始化页面的链接跳转*/
+        bui.btn({ id: "#page", handle: ".bui-btn,.bui-btn-text" }).load();
+
+        // 监听密码输入事件
+        onInput({
+            id: ".code-input",
+            callback: function () {
+                // 点击删除按钮清空
+                $("#code").val('');
+                $(this).hide();
+            }
+        });
+
+        // 点击触发倒计时
+        $(".btn-send").on("click", function () {
+            var isDisable = $(this).hasClass("disabled");
+
+            if (!isDisable) {
+                $(this).addClass("disabled");
+
+                if (timeout) {
+                    clearTimeout(timeout);
+                }
+                countdown.call(this);
+            }
+        })
+
+    }
+
+    pageview.init = function () {
+
+        // 绑定事件
+        this.bind();
+    }
+
+    /**
+     * [countnum 倒计时]
+     * type {Number}
+     */
+    var countnum = 60,
+        timeout;
+    function countdown(_self) {
+        _self = _self || this;
+        var arg = arguments;
+
+        var $this = $(_self);
+
+        if (countnum == 0) {
+            $this.removeClass("disabled");
+            $this.text("获取验证码");
+            countnum = 60;
+
+            clearTimeout(timeout);
+
+            return;
+        } else {
+            $this.addClass("disabled");
+            $this.text("重新发送(" + countnum + ")");
+            countnum--;
+        }
+
+        // 自执行
+        timeout = setTimeout(function () {
+            countdown(_self)
+        }, 1000)
+    }
+    function onInput(opt) {
+        var opt = opt || {};
+        opt.id = opt.id || "";
+        opt.target = opt.target || "input";
+        opt.event = opt.event || "keyup";
+        opt.icon = opt.icon || "icon-remove";
+        opt.onInput = opt.onInput || function () { };
+        opt.callback = opt.callback || function () { };
+
+        if (opt.id == "" || opt.id === null) {
+            return;
+        }
+        var $id = $(opt.id),
+            $target = $id.find(opt.target),
+            iconClass = '.' + opt.icon;
+
+        // 输入框监听延迟执行
+        $target.on(opt.event, bui.unit.debounce(function () {
+            var val = $(this).val(),
+                $btnRemove = $id.find(iconClass);
+            if (val.length > 0) {
+                if ($btnRemove && $btnRemove.length) {
+                    $btnRemove.css("display", "block");
+                } else {
+                    $id.append('<i class="' + opt.icon + '"></i>');
+                    $btnRemove = $target.find(iconClass);
+                }
+            } else {
+                $btnRemove && $btnRemove.css("display", "none");
+            }
+
+            opt.onInput && opt.onInput.call(this);
+        }, 100))
+
+        // 图标点击事件
+        $id.on("click", iconClass, function () {
+            opt.callback && opt.callback.call(this);
+        })
+    }
+    // -------------------------------------------------------------------------------------------------------------------
+
+    var page_jf = {
+        rows: 10,//每页行数
+        page: 0,//当前页
+        sidx: 'Month',//排序列
+        sord: 'asc',//排序类型
+        records: 0,//总记录数
+        total: 0,//总页数
+        LoadEnd: false
+    }
+
+
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = $("#form1").formSerialize();
+        $.weuiSubmitAjax({
+            url: "/GY/GY_BL/SaveForm?keyValue=" + $("#Id").val(),
+            param: postData,
+            success: function () {
+                closeForm();
+            }
+        })
+    }
+
+    function AddInstrument() {
+        var html = '<div class="section-title">病例器械</div>'
+                   +'<a href="/GY/GY_M/BLSelectFname">'
+                   +' <div class="bui-btn bui-box">'
+                   +'     <div class="span1">厂家</div>'
+                   +'     <i class="icon-listright"></i>'
+                   +' </div>'
+                   +' </a>'
+                   + ' <a href="/GY/GY_M/BLSelectTypename">'
+                   +'     <div class="bui-btn bui-box">'
+                   +'         <div class="span1">类别</div>'
+                   +'         <i class="icon-listright"></i>'
+                   +'     </div>'
+                   +' </a>'
+                   + ' <a href="/GY/GY_M/BLSelectPname">'
+                   +'     <div class="bui-btn bui-box">'
+                   +'         <div class="span1">器械</div>'
+                   +'         <i class="icon-listright"></i>'
+                   +'     </div>'
+                   +' </a>'
+                   +' <div class="bui-btn bui-box clearactive">'
+                   +'     <label class="bui-label" for="user">数量</label>'
+                   +'     <div class="span1">'
+                   +'         <div class="bui-input">'
+                   + '             <input id="quantity" name="quantity" type="text" placeholder="请输入数量">'
+                   +'         </div>'
+                   +'     </div>'
+                   +' </div>';
+        $("#instrument").append(html)
+    }
+
+    //关闭Form
+    function closeForm() {
+        bui.back();
+    }
+
+
+</script>
+
+<form id="form1">
+    <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
+    <div id="page" class="bui-page register-page">
+        <header class="bui-bar">
+            <div class="bui-bar">
+                <div class="bui-bar-left">
+                    <a class="bui-btn" onclick="bui.back();"><i class="icon-back"></i></a>
+                </div>
+                <div class="bui-bar-main">病例信息采集</div>
+                <div class="bui-bar-right">
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="section-title">请填写信息</div>
+            <ul class="bui-list  nav-list">
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">状态</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="status" name="status" type="text" placeholder="请输入状态">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">医院</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="hname" name="hname" type="text" class="required" placeholder="请输入医院">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">手术名称</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="operation" name="operation" type="text" placeholder="请输入手术名称">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">患者名称</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="pname" name="pname" type="text" placeholder="请输入患者名称">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">患者性别</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="psex" name="psex" type="text" placeholder="请输入患者性别">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">患者年龄</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="page" name="page" type="text" placeholder="请输入患者年龄">
+                        </div>
+                    </div>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">体重</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="pweight" name="pweight" type="text" placeholder="请输入体重">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">病史</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="mhistory" name="mhistory" type="text" placeholder="请输入病史">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">联系方式</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="linktype" name="linktype" type="text" placeholder="请输入联系方式">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">家属电话</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="phone" name="phone" type="text" placeholder="请输入家属电话">
+                        </div>
+                    </div>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">主治医生</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="chiefdoctor" name="chiefdoctor" type="text" placeholder="请输入主治医生">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">主刀医生</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="knifedoctor" name="knifedoctor" type="text" placeholder="请输入主刀医生">
+                        </div>
+                    </div>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">住院号</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="hospitalnum" name="hospitalnum" type="text" placeholder="请输入住院号">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">床位号</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="bednum" name="bednum" type="text" placeholder="请输入床位号">
+                        </div>
+                    </div>
+                </li>
+                <li class="bui-btn bui-box clearactive">
+                    <label class="bui-label" for="user">手术时间</label>
+                    <div class="span1">
+                        <div class="bui-input">
+                            <input id="opertime" name="opertime" type="date" placeholder="请输入手术时间">
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div id="instrument">
+
+            </div>
+            @*<div class="section-title">选择器械</div>
+            <div class="bui-box">
+                <div class="span1">
+                    <div id="provinceSelect" class="bui-btn bui-box">
+                        <div class="span1">厂家</div>
+                        <i class="icon-listright"></i>
+                    </div>
+                </div>
+                <div class="span1">
+                    <div id="citySelect" class="bui-btn bui-box">
+                        <div class="span1">类别</div>
+                        <i class="icon-listright"></i>
+                    </div>
+                </div>
+                <div class="span1">
+                    <div id="areaSelect" class="bui-btn bui-box">
+                        <div class="span1">器械</div>
+                        <i class="icon-listright"></i>
+                    </div>
+                </div>
+            </div>*@
+            <div class="container-xy">
+                <div class="bui-btn round primary" onclick="AddInstrument()">添加器械</div>
+                <div class="bui-btn round primary" onclick="submitForm()">提交</div>
+            </div>
+        </main>
+
+    </div>
+</form>
